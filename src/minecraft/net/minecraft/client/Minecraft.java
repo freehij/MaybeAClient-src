@@ -117,7 +117,6 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.Pbuffer;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 
@@ -128,7 +127,7 @@ public abstract class Minecraft implements Runnable {
     private static Minecraft theMinecraft;
     public PlayerController playerController;
     private boolean fullscreen = false;
-    private boolean field_28004_R = false;
+    private boolean hasCrashed = false;
     public int displayWidth;
     public int displayHeight;
     private OpenGlCapsChecker glCapabilities;
@@ -172,8 +171,8 @@ public abstract class Minecraft implements Runnable {
     public StatFileWriter statFileWriter;
     private String serverName;
     private int serverPort;
-    private TextureFX textureWaterFX;
-    private TextureFX textureLavaFX;
+    private TextureFX textureWaterFX = new TextureWaterFX();
+    private TextureFX textureLavaFX = new TextureLavaFX();
     private static File minecraftDir = null;
     public volatile boolean running = true;
     public String debug = "";
@@ -198,17 +197,19 @@ public abstract class Minecraft implements Runnable {
         if (var3 == null || "true".equals(var3.getParameter("stand-alone"))) {
             this.hideQuitButton = false;
         }
-        
+
         theMinecraft = this;
+
 		Hack.mc = this;
 		Client.mc = this;
 		Settings.instance().minecraft = this;
 		PlayerUtils.mc = this;
 		IngameHook.mc = this;
+		
     }
 
-    public void func_28003_b(UnexpectedThrowable var1) {
-        this.field_28004_R = true;
+    public void onMinecraftCrash(UnexpectedThrowable var1) {
+        this.hasCrashed = true;
         this.displayUnexpectedThrowable(var1);
     }
 
@@ -283,22 +284,24 @@ public abstract class Minecraft implements Runnable {
             Display.setDisplayMode(new DisplayMode(this.displayWidth, this.displayHeight));
         }
 
-        Display.setTitle("Minecraft Minecraft Beta 1.6.6");
-		//XXX MaybeAClient: OutlineESP Fix
-		PixelFormat pf = new PixelFormat().withStencilBits(8);
+        Display.setTitle("Minecraft Minecraft Beta 1.7.3");
 
-        try {
-            Display.create(pf);
-        } catch (LWJGLException var6) {
-            var6.printStackTrace();
+        //XXX MaybeAClient: OutlineESP Fix
+      	PixelFormat pf = new PixelFormat().withStencilBits(8);
+      	
 
-            try {
-                Thread.sleep(1000L);
-            } catch (InterruptedException var5) {
-            }
+		try {
+			Display.create(pf);
+		} catch (LWJGLException var6) {
+			var6.printStackTrace();
 
-            Display.create(pf);
-        }
+			try {
+				Thread.sleep(1000L);
+			} catch (InterruptedException var5) {
+			}
+
+			Display.create(pf);
+		}
 
         this.mcDataDir = getMinecraftDir();
         this.saveLoader = new SaveConverterMcRegion(new File(this.mcDataDir, "saves"));
@@ -361,6 +364,7 @@ public abstract class Minecraft implements Runnable {
         } else {
             this.displayGuiScreen(new GuiMainMenu());
         }
+
     }
 
     private void loadScreen() throws LWJGLException {
@@ -479,7 +483,7 @@ public abstract class Minecraft implements Runnable {
                 this.statFileWriter.func_27175_b();
             }
 
-            this.statFileWriter.func_27182_c();
+            this.statFileWriter.syncStats();
             if (var1 == null && this.theWorld == null) {
                 var1 = new GuiMainMenu();
             } else if (var1 == null && this.thePlayer.health <= 0) {
@@ -487,7 +491,7 @@ public abstract class Minecraft implements Runnable {
             }
 
             if (var1 instanceof GuiMainMenu) {
-                this.ingameGUI.func_28097_b();
+                this.ingameGUI.clearChatMessages();
             }
 
             this.currentScreen = (GuiScreen)var1;
@@ -519,7 +523,7 @@ public abstract class Minecraft implements Runnable {
     public void shutdownMinecraftApplet() {
         try {
             this.statFileWriter.func_27175_b();
-            this.statFileWriter.func_27182_c();
+            this.statFileWriter.syncStats();
             if (this.mcApplet != null) {
                 this.mcApplet.clearApplet();
             }
@@ -549,7 +553,7 @@ public abstract class Minecraft implements Runnable {
             Keyboard.destroy();
         } finally {
             Display.destroy();
-            if (!this.field_28004_R) {
+            if (!this.hasCrashed) {
                 System.exit(0);
             }
 
@@ -565,7 +569,7 @@ public abstract class Minecraft implements Runnable {
             this.startGame();
         } catch (Exception var17) {
             var17.printStackTrace();
-            this.func_28003_b(new UnexpectedThrowable("Failed to start game", var17));
+            this.onMinecraftCrash(new UnexpectedThrowable("Failed to start game", var17));
             return;
         }
 
@@ -651,7 +655,7 @@ public abstract class Minecraft implements Runnable {
                     if (Keyboard.isKeyDown(65)) {
                         Display.update();
                     }
-                    
+
                     this.screenshotListener();
                     if (this.mcCanvas != null && !this.fullscreen && (this.mcCanvas.getWidth() != this.displayWidth || this.mcCanvas.getHeight() != this.displayHeight)) {
                         this.displayWidth = this.mcCanvas.getWidth();
@@ -690,7 +694,7 @@ public abstract class Minecraft implements Runnable {
         } catch (Throwable var21) {
             this.func_28002_e();
             var21.printStackTrace();
-            this.func_28003_b(new UnexpectedThrowable("Unexpected error", var21));
+            this.onMinecraftCrash(new UnexpectedThrowable("Unexpected error", var21));
         } finally {
             this.shutdownMinecraftApplet();
         }
@@ -832,6 +836,7 @@ public abstract class Minecraft implements Runnable {
             		this.thePlayer.resetPlayerKeyState();
             	}
             }
+
 			AFKDisconnectHack.stopAFKing();
             this.inGameHasFocus = false;
             this.mouseHelper.ungrabMouseCursor();
@@ -978,7 +983,6 @@ public abstract class Minecraft implements Runnable {
         this.displayHeight = var2;
         ScaledResolution var3 = new ScaledResolution(this.gameSettings, var1, var2);
         if (this.currentScreen != null) {
-           
             int var4 = var3.getScaledWidth();
             int var5 = var3.getScaledHeight();
             this.currentScreen.setWorldAndResolution(this, var4, var5);
@@ -1158,7 +1162,7 @@ public abstract class Minecraft implements Runnable {
                                                 if (Keyboard.getEventKey() == this.gameSettings.keyBindDrop.keyCode) {
                                                     this.thePlayer.dropCurrentItem();
                                                 }
-                                                
+
                                                 //XXX chat in sp
 												if (/*this.isMultiplayerWorld() &&*/ Keyboard.getEventKey() == this.gameSettings.keyBindChat.keyCode) {
 													this.displayGuiScreen(new GuiChat());
@@ -1178,7 +1182,8 @@ public abstract class Minecraft implements Runnable {
                                     }
                                 }
                             }
-							AFKDisconnectHack.stopAFKing();
+
+                            AFKDisconnectHack.stopAFKing();
 							Client.onKeyPress(Client.getKeycodeForMouseButton(Mouse.getEventButton()), Mouse.getEventButtonState());
                             var5 = System.currentTimeMillis() - this.systemTime;
                         } while(var5 > 200L);
@@ -1225,6 +1230,7 @@ public abstract class Minecraft implements Runnable {
                 }
             }
         }
+        
 
         if(AutoMouseClickHack.instance.status && thePlayer != null) {
 			if(!AutoMouseClickHack.instance.left.currentMode.equalsIgnoreCase("Disabled")) {
@@ -1262,7 +1268,7 @@ public abstract class Minecraft implements Runnable {
 				AutoMouseClickHack.instance.rdelay = 0;
 			}
 		}
-        
+
         if (this.theWorld != null) {
             if (this.thePlayer != null) {
                 ++this.joinPlayerCounter;
@@ -1338,12 +1344,12 @@ public abstract class Minecraft implements Runnable {
             World var6 = null;
             var6 = new World(var5, var2, var3);
             if (var6.isNewWorld) {
-                this.statFileWriter.func_25100_a(StatList.createWorldStat, 1);
-                this.statFileWriter.func_25100_a(StatList.startGameStat, 1);
+                this.statFileWriter.readStat(StatList.createWorldStat, 1);
+                this.statFileWriter.readStat(StatList.startGameStat, 1);
                 this.changeWorld2(var6, "Generating level");
             } else {
-                this.statFileWriter.func_25100_a(StatList.loadWorldStat, 1);
-                this.statFileWriter.func_25100_a(StatList.startGameStat, 1);
+                this.statFileWriter.readStat(StatList.loadWorldStat, 1);
+                this.statFileWriter.readStat(StatList.startGameStat, 1);
                 this.changeWorld2(var6, "Loading level");
             }
         }
@@ -1407,13 +1413,13 @@ public abstract class Minecraft implements Runnable {
 
     public void changeWorld(World var1, String var2, EntityPlayer var3) {
         this.statFileWriter.func_27175_b();
-        this.statFileWriter.func_27182_c();
+        this.statFileWriter.syncStats();
         this.renderViewEntity = null;
         this.loadingScreen.printText(var2);
         this.loadingScreen.displayLoadingString("");
         this.sndManager.playStreaming((String)null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
         if (this.theWorld != null) {
-            this.theWorld.func_651_a(this.loadingScreen);
+            this.theWorld.saveWorldIndirectly(this.loadingScreen);
         }
 
         this.theWorld = var1;
@@ -1451,7 +1457,7 @@ public abstract class Minecraft implements Runnable {
 
             this.playerController.func_6473_b(this.thePlayer);
             if (var3 != null) {
-                var1.func_6464_c();
+                var1.emptyMethod1();
             }
 
             IChunkProvider var4 = var1.getIChunkProvider();
@@ -1464,7 +1470,7 @@ public abstract class Minecraft implements Runnable {
 
             var1.spawnPlayerWithLoadedChunks(this.thePlayer);
             if (var1.isNewWorld) {
-                var1.func_651_a(this.loadingScreen);
+                var1.saveWorldIndirectly(this.loadingScreen);
             }
 
             this.renderViewEntity = this.thePlayer;
@@ -1651,8 +1657,7 @@ public abstract class Minecraft implements Runnable {
     public NetClientHandler getSendQueue() {
         return this.thePlayer instanceof EntityClientPlayerMP ? ((EntityClientPlayerMP)this.thePlayer).sendQueue : null;
     }
-	
-	
+
     public static void main(String[] var0) {
         String var1 = null;
         String var2 = null;

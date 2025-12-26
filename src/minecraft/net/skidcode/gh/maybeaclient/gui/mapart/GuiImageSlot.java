@@ -54,6 +54,7 @@ public class GuiImageSlot extends GuiSlot{
 					GuiMapArtCreator.selectedImageF = null;
 				}
 			}catch (IOException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}finally {
 				try {
@@ -73,6 +74,7 @@ public class GuiImageSlot extends GuiSlot{
 
 	@Override
 	protected void drawBackground() {
+		// TODO Auto-generated method stub
 		
 	}
 

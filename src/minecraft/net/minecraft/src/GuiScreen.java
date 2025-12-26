@@ -41,6 +41,7 @@ public class GuiScreen extends Gui {
             this.mc.displayGuiScreen((GuiScreen)null);
             this.mc.setIngameFocus();
         }
+
     }
 
     public static String getClipboardString() {
@@ -106,7 +107,6 @@ public class GuiScreen extends Gui {
         }
         
         AFKDisconnectHack.startAFKing();
-
     }
 
     public void handleMouseInput() {
@@ -148,7 +148,7 @@ public class GuiScreen extends Gui {
 
     public void drawWorldBackground(int var1) {
         if (this.mc.theWorld != null) {
-            drawGradientRect(0, 0, this.width, this.height, -1072689136, -804253680);
+            this.drawGradientRect(0, 0, this.width, this.height, -1072689136, -804253680);
         } else {
             this.drawBackground(var1);
         }

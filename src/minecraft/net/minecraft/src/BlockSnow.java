@@ -82,6 +82,6 @@ public class BlockSnow extends Block {
     	if(XRayHack.INSTANCE.status && !XRayHack.INSTANCE.mode.currentMode.equalsIgnoreCase("Opacity")) {
     		return XRayHack.INSTANCE.blockChooser.blocks[this.blockID];
     	}
-    	return var5 == 1 ? true : super.shouldSideBeRendered(var1, var2, var3, var4, var5);
+        return var5 == 1 ? true : super.shouldSideBeRendered(var1, var2, var3, var4, var5);
     }
 }

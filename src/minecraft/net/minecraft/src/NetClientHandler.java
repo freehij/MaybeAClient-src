@@ -43,7 +43,7 @@ public class NetClientHandler extends NetHandler {
 
     public void handleLogin(Packet1Login var1) {
         this.mc.playerController = new PlayerControllerMP(this.mc, this);
-        this.mc.statFileWriter.func_25100_a(StatList.joinMultiplayerStat, 1);
+        this.mc.statFileWriter.readStat(StatList.joinMultiplayerStat, 1);
         this.worldClient = new WorldClient(this, var1.mapSeed, var1.dimension);
         this.worldClient.multiplayerWorld = true;
         this.mc.changeWorld1(this.worldClient);
@@ -386,7 +386,7 @@ public class NetClientHandler extends NetHandler {
 
     public void handleHandshake(Packet2Handshake var1) {
         if (var1.username.equals("-")) {
-            this.addToSendQueue(new Packet1Login(this.mc.session.username, 13));
+            this.addToSendQueue(new Packet1Login(this.mc.session.username, 14));
         } else {
             try {
                 URL var2 = new URL("http://www.minecraft.net/game/joinserver.jsp?user=" + this.mc.session.username + "&sessionId=" + this.mc.session.sessionId + "&serverId=" + var1.username);
@@ -394,7 +394,7 @@ public class NetClientHandler extends NetHandler {
                 String var4 = var3.readLine();
                 var3.close();
                 if (var4.equalsIgnoreCase("ok")) {
-                    this.addToSendQueue(new Packet1Login(this.mc.session.username, 13));
+                    this.addToSendQueue(new Packet1Login(this.mc.session.username, 14));
                 } else {
                     this.netManager.networkShutdown("disconnect.loginFailedInfo", var4);
                 }
@@ -555,7 +555,7 @@ public class NetClientHandler extends NetHandler {
 
     }
 
-    public void func_20093_a(Packet130UpdateSign var1) {
+    public void handleSignUpdate(Packet130UpdateSign var1) {
         if (this.mc.theWorld.blockExists(var1.xPosition, var1.yPosition, var1.zPosition)) {
             TileEntity var2 = this.mc.theWorld.getBlockTileEntity(var1.xPosition, var1.yPosition, var1.zPosition);
             if (var2 instanceof TileEntitySign) {
@@ -588,10 +588,10 @@ public class NetClientHandler extends NetHandler {
     }
 
     public void func_20092_a(Packet101CloseWindow var1) {
-        this.mc.thePlayer.func_20059_m();
+        this.mc.thePlayer.closeScreen();
     }
 
-    public void func_21145_a(Packet54PlayNoteBlock var1) {
+    public void handleNotePlay(Packet54PlayNoteBlock var1) {
         this.mc.theWorld.playNoteAt(var1.xLocation, var1.yLocation, var1.zLocation, var1.instrumentType, var1.pitch);
     }
 
@@ -605,15 +605,15 @@ public class NetClientHandler extends NetHandler {
         	if(WeatherLockHack.instance.status) {
         		WeatherLockHack.raining = true;
         	}else {
-        		this.worldClient.getWorldInfo().setRaining(true);
+                this.worldClient.getWorldInfo().setRaining(true);
                 this.worldClient.func_27158_h(1.0F);
         	}
         } else if (var2 == 2) {
         	if(WeatherLockHack.instance.status) {
         		WeatherLockHack.raining = false;
         	}else {
-        		this.worldClient.getWorldInfo().setRaining(false);
-                this.worldClient.func_27158_h(0F);
+                this.worldClient.getWorldInfo().setRaining(false);
+                this.worldClient.func_27158_h(0.0F);
         	}
         }
 

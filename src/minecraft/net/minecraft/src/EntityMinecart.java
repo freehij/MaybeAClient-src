@@ -400,15 +400,15 @@ public class EntityMinecart extends Entity implements IInventory {
                         this.motionX += this.motionX / var42 * var44;
                         this.motionZ += this.motionZ / var42 * var44;
                     } else if (var11 == 1) {
-                        if (this.worldObj.func_28100_h(var1 - 1, var2, var3)) {
+                        if (this.worldObj.isBlockNormalCube(var1 - 1, var2, var3)) {
                             this.motionX = 0.02D;
-                        } else if (this.worldObj.func_28100_h(var1 + 1, var2, var3)) {
+                        } else if (this.worldObj.isBlockNormalCube(var1 + 1, var2, var3)) {
                             this.motionX = -0.02D;
                         }
                     } else if (var11 == 0) {
-                        if (this.worldObj.func_28100_h(var1, var2, var3 - 1)) {
+                        if (this.worldObj.isBlockNormalCube(var1, var2, var3 - 1)) {
                             this.motionZ = 0.02D;
-                        } else if (this.worldObj.func_28100_h(var1, var2, var3 + 1)) {
+                        } else if (this.worldObj.isBlockNormalCube(var1, var2, var3 + 1)) {
                             this.motionZ = -0.02D;
                         }
                     }

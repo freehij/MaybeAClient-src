@@ -29,19 +29,6 @@ public class EntityPlayerSP extends EntityPlayer {
         this.username = var3.username;
     }
 
-    @Override
-    public boolean attackEntityFrom(Entity var1, int var2) {
-    	boolean b = super.attackEntityFrom(var1, var2);
-    	if(this == mc.thePlayer && CombatLogHack.instance.status && CombatLogHack.instance.mode.currentMode.equalsIgnoreCase("OnHit")) {
-    		if(mc.isMultiplayerWorld()) {
-    			Client.forceDisconnect(CombatLogHack.instance);
-    		}else {
-    			CombatLogHack.shouldQuit = true;
-    		}
-    	}
-    	return b;
-    }
-    
     public void moveEntity(double var1, double var3, double var5) {
         super.moveEntity(var1, var3, var5);
     }
@@ -93,7 +80,7 @@ public class EntityPlayerSP extends EntityPlayer {
             if (this.timeInPortal >= 1.0F) {
                 this.timeInPortal = 1.0F;
                 if (!this.worldObj.multiplayerWorld) {
-                    this.field_28024_y = 10;
+                    this.timeUntilPortal = 10;
                     this.mc.sndManager.playSoundFX("portal.travel", 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
                     this.mc.usePortal();
                 }
@@ -110,8 +97,8 @@ public class EntityPlayerSP extends EntityPlayer {
             }
         }
 
-        if (this.field_28024_y > 0) {
-            --this.field_28024_y;
+        if (this.timeUntilPortal > 0) {
+            --this.timeUntilPortal;
         }
 
         this.movementInput.updatePlayerMoveState(this);
@@ -119,17 +106,18 @@ public class EntityPlayerSP extends EntityPlayer {
             this.ySize = 0.2F;
         }
 
-        this.func_28014_c(this.posX - (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
-        this.func_28014_c(this.posX - (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double)this.width * 0.35D);
-        this.func_28014_c(this.posX + (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double)this.width * 0.35D);
-        this.func_28014_c(this.posX + (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
+        this.pushOutOfBlocks(this.posX - (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
+        this.pushOutOfBlocks(this.posX - (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double)this.width * 0.35D);
+        this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double)this.width * 0.35D);
+        this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
         
-        if(!FreecamHack.movementTaken()) {
+        /*if(!FreecamHack.movementTaken()) {
         	this.movementInput.updatePlayerMoveState(this);
         	if (this.movementInput.sneak && this.ySize < 0.2F) {
                 this.ySize = 0.2F;
             }
-        }
+        }*/ //TODO duplicate???
+
         
         EventPlayerUpdatePost ee = new EventPlayerUpdatePost();
         EventRegistry.handleEvent(ee);
@@ -145,6 +133,19 @@ public class EntityPlayerSP extends EntityPlayer {
         this.movementInput.checkKeyForMovementInput(var1, var2);
     }
 
+    @Override
+    public boolean attackEntityFrom(Entity var1, int var2) {
+    	boolean b = super.attackEntityFrom(var1, var2);
+    	if(this == mc.thePlayer && CombatLogHack.instance.status && CombatLogHack.instance.mode.currentMode.equalsIgnoreCase("OnHit")) {
+    		if(mc.isMultiplayerWorld()) {
+    			Client.forceDisconnect(CombatLogHack.instance);
+    		}else {
+    			CombatLogHack.shouldQuit = true;
+    		}
+    	}
+    	return b;
+    }
+    
     public void writeEntityToNBT(NBTTagCompound var1) {
         super.writeEntityToNBT(var1);
         var1.setInteger("Score", this.score);
@@ -155,8 +156,8 @@ public class EntityPlayerSP extends EntityPlayer {
         this.score = var1.getInteger("Score");
     }
 
-    public void func_20059_m() {
-        super.func_20059_m();
+    public void closeScreen() {
+        super.closeScreen();
         this.mc.displayGuiScreen((GuiScreen)null);
     }
 
@@ -200,12 +201,12 @@ public class EntityPlayerSP extends EntityPlayer {
         if (var2 <= 0) {
             this.health = var1;
             if (var2 < 0) {
-                this.field_9306_bj = this.field_9366_o / 2;
+                this.heartsLife = this.heartsHalvesLife / 2;
             }
         } else {
             this.field_9346_af = var2;
             this.prevHealth = this.health;
-            this.field_9306_bj = this.field_9366_o;
+            this.heartsLife = this.heartsHalvesLife;
             this.damageEntity(var2);
             this.hurtTime = this.maxHurtTime = 10;
         }
@@ -220,11 +221,12 @@ public class EntityPlayerSP extends EntityPlayer {
     }
 
     public void addChatMessage(String var1) {
-        this.mc.ingameGUI.func_22064_c(var1);
+        this.mc.ingameGUI.addChatMessageTranslate(var1);
     }
     public void addChatMessageWithMoreOpacityBG(String var1) {
         this.mc.ingameGUI.addChatMessageWithMoreOpacityBG(var1);
     }
+
     public void addStat(StatBase var1, int var2) {
         if (var1 != null) {
             if (var1.func_25067_a()) {
@@ -234,30 +236,30 @@ public class EntityPlayerSP extends EntityPlayer {
                         this.mc.guiAchievement.queueTakenAchievement(var3);
                     }
 
-                    this.mc.statFileWriter.func_25100_a(var1, var2);
+                    this.mc.statFileWriter.readStat(var1, var2);
                 }
             } else {
-                this.mc.statFileWriter.func_25100_a(var1, var2);
+                this.mc.statFileWriter.readStat(var1, var2);
             }
 
         }
     }
 
-    private boolean func_28027_d(int var1, int var2, int var3) {
-        return this.worldObj.func_28100_h(var1, var2, var3);
+    private boolean isBlockTranslucent(int var1, int var2, int var3) {
+        return this.worldObj.isBlockNormalCube(var1, var2, var3);
     }
 
-    protected boolean func_28014_c(double var1, double var3, double var5) {
+    protected boolean pushOutOfBlocks(double var1, double var3, double var5) {
         int var7 = MathHelper.floor_double(var1);
         int var8 = MathHelper.floor_double(var3);
         int var9 = MathHelper.floor_double(var5);
         double var10 = var1 - (double)var7;
         double var12 = var5 - (double)var9;
-        if (this.func_28027_d(var7, var8, var9) || this.func_28027_d(var7, var8 + 1, var9)) {
-            boolean var14 = !this.func_28027_d(var7 - 1, var8, var9) && !this.func_28027_d(var7 - 1, var8 + 1, var9);
-            boolean var15 = !this.func_28027_d(var7 + 1, var8, var9) && !this.func_28027_d(var7 + 1, var8 + 1, var9);
-            boolean var16 = !this.func_28027_d(var7, var8, var9 - 1) && !this.func_28027_d(var7, var8 + 1, var9 - 1);
-            boolean var17 = !this.func_28027_d(var7, var8, var9 + 1) && !this.func_28027_d(var7, var8 + 1, var9 + 1);
+        if (this.isBlockTranslucent(var7, var8, var9) || this.isBlockTranslucent(var7, var8 + 1, var9)) {
+            boolean var14 = !this.isBlockTranslucent(var7 - 1, var8, var9) && !this.isBlockTranslucent(var7 - 1, var8 + 1, var9);
+            boolean var15 = !this.isBlockTranslucent(var7 + 1, var8, var9) && !this.isBlockTranslucent(var7 + 1, var8 + 1, var9);
+            boolean var16 = !this.isBlockTranslucent(var7, var8, var9 - 1) && !this.isBlockTranslucent(var7, var8 + 1, var9 - 1);
+            boolean var17 = !this.isBlockTranslucent(var7, var8, var9 + 1) && !this.isBlockTranslucent(var7, var8 + 1, var9 + 1);
             byte var18 = -1;
             double var19 = 9999.0D;
             if (var14 && var10 < var19) {

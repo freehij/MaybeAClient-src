@@ -186,7 +186,7 @@ public class ChunkProviderGenerate implements IChunkProvider {
 
     }
 
-    public Chunk func_538_d(int var1, int var2) {
+    public Chunk prepareChunk(int var1, int var2) {
         return this.provideChunk(var1, var2);
     }
 
@@ -606,11 +606,11 @@ public class ChunkProviderGenerate implements IChunkProvider {
         return true;
     }
 
-    public boolean func_532_a() {
+    public boolean unload100OldestChunks() {
         return false;
     }
 
-    public boolean func_536_b() {
+    public boolean canSave() {
         return true;
     }
 

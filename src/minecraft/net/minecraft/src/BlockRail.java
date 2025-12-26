@@ -72,7 +72,7 @@ public class BlockRail extends Block {
     }
 
     public boolean canPlaceBlockAt(World var1, int var2, int var3, int var4) {
-        return var1.func_28100_h(var2, var3 - 1, var4);
+        return var1.isBlockNormalCube(var2, var3 - 1, var4);
     }
 
     public void onBlockAdded(World var1, int var2, int var3, int var4) {
@@ -91,23 +91,23 @@ public class BlockRail extends Block {
             }
 
             boolean var8 = false;
-            if (!var1.func_28100_h(var2, var3 - 1, var4)) {
+            if (!var1.isBlockNormalCube(var2, var3 - 1, var4)) {
                 var8 = true;
             }
 
-            if (var7 == 2 && !var1.func_28100_h(var2 + 1, var3, var4)) {
+            if (var7 == 2 && !var1.isBlockNormalCube(var2 + 1, var3, var4)) {
                 var8 = true;
             }
 
-            if (var7 == 3 && !var1.func_28100_h(var2 - 1, var3, var4)) {
+            if (var7 == 3 && !var1.isBlockNormalCube(var2 - 1, var3, var4)) {
                 var8 = true;
             }
 
-            if (var7 == 4 && !var1.func_28100_h(var2, var3, var4 - 1)) {
+            if (var7 == 4 && !var1.isBlockNormalCube(var2, var3, var4 - 1)) {
                 var8 = true;
             }
 
-            if (var7 == 5 && !var1.func_28100_h(var2, var3, var4 + 1)) {
+            if (var7 == 5 && !var1.isBlockNormalCube(var2, var3, var4 + 1)) {
                 var8 = true;
             }
 
@@ -242,6 +242,10 @@ public class BlockRail extends Block {
         }
 
         return false;
+    }
+
+    public int getMobilityFlag() {
+        return 0;
     }
 
     // $FF: synthetic method

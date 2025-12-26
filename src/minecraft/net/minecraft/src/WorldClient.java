@@ -18,14 +18,14 @@ public class WorldClient extends World {
     public SaveHandler downloadSaveHandler;
 	public IChunkLoader downloadChunkLoader;
 	public boolean downloadThisWorld = false;
-	
+
     public WorldClient(NetClientHandler var1, long var2, int var4) {
         super(new SaveHandlerMP(), "MpServer", WorldProvider.getProviderForDimension(var4), var2);
         this.sendQueue = var1;
         this.setSpawnPoint(new ChunkCoordinates(8, 64, 8));
         this.field_28108_z = var1.field_28118_b;
     }
-
+    
     public void setNewBlockTileEntity(int x, int y, int z, TileEntity tile) {
     	Chunk chunk = getChunkFromChunkCoords(x >> 4, z >> 4);
         if(chunk != null)
@@ -33,7 +33,7 @@ public class WorldClient extends World {
             chunk.setNewChunkBlockTileEntity(x & 0xf, y, z & 0xf, tile);
         }
 	}
-    
+
     public void playNoteAt(int x, int y, int z, int var4, int var5) {
     	super.playNoteAt(x, y, z, var4, var5);
     	if(!downloadThisWorld)
@@ -75,7 +75,6 @@ public class WorldClient extends World {
     		}
     	}
     	
-    	
         this.setWorldTime(this.getWorldTime() + 1L);
         
         long oldTime = this.getWorldTime();
@@ -97,7 +96,7 @@ public class WorldClient extends World {
         	LockTimeHack.INSTANCE.realTime = oldTime;
         	this.worldInfo.setWorldTime(oldTime);
         }
-        
+
         for(var2 = 0; var2 < 10 && !this.field_1053_F.isEmpty(); ++var2) {
             Entity var3 = (Entity)this.field_1053_F.iterator().next();
             if (!this.loadedEntityList.contains(var3)) {
@@ -149,7 +148,7 @@ public class WorldClient extends World {
 
     public void doPreChunk(int var1, int var2, boolean var3) {
         if (var3) {
-            this.field_20915_C.func_538_d(var1, var2);
+            this.field_20915_C.prepareChunk(var1, var2);
         } else {
             this.field_20915_C.func_539_c(var1, var2);
         }
@@ -268,7 +267,7 @@ public class WorldClient extends World {
     }
 
     protected void updateWeather() {
-        if (!this.worldProvider.field_6478_e) {
+        if (!this.worldProvider.hasNoSky) {
             if (this.field_27168_F > 0) {
                 --this.field_27168_F;
             }

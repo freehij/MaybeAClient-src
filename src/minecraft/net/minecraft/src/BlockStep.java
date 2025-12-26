@@ -80,7 +80,7 @@ public class BlockStep extends Block {
     		return XRayHack.INSTANCE.blockChooser.blocks[this.blockID];
     	}
     	
-    	if (this != Block.stairSingle) {
+        if (this != Block.stairSingle) {
             super.shouldSideBeRendered(var1, var2, var3, var4, var5);
         }
 

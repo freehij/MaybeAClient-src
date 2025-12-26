@@ -37,7 +37,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
         }
     }
 
-    public Chunk func_538_d(int var1, int var2) {
+    public Chunk prepareChunk(int var1, int var2) {
         return this.provideChunk(var1, var2);
     }
 
@@ -199,15 +199,15 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
         return true;
     }
 
-    public boolean func_532_a() {
+    public boolean unload100OldestChunks() {
         if (this.chunkLoader != null) {
             this.chunkLoader.func_814_a();
         }
 
-        return this.chunkProvider.func_532_a();
+        return this.chunkProvider.unload100OldestChunks();
     }
 
-    public boolean func_536_b() {
+    public boolean canSave() {
         return true;
     }
 

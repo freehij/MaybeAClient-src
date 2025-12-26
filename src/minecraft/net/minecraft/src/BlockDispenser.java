@@ -3,7 +3,7 @@ package net.minecraft.src;
 import java.util.Random;
 
 public class BlockDispenser extends BlockContainer {
-    private Random field_28035_a = new Random();
+    private Random random = new Random();
 
     protected BlockDispenser(int var1) {
         super(var1, Material.rock);
@@ -106,7 +106,7 @@ public class BlockDispenser extends BlockContainer {
             if (var12.itemID == Item.arrow.shiftedIndex) {
                 EntityArrow var19 = new EntityArrow(var1, var13, var15, var17);
                 var19.setArrowHeading((double)var9, 0.10000000149011612D, (double)var10, 1.1F, 6.0F);
-                var19.field_28020_a = true;
+                var19.doesArrowBelongToPlayer = true;
                 var1.entityJoinedWorld(var19);
                 var1.func_28106_e(1002, var2, var3, var4, 0);
             } else if (var12.itemID == Item.egg.shiftedIndex) {
@@ -184,12 +184,12 @@ public class BlockDispenser extends BlockContainer {
         for(int var6 = 0; var6 < var5.getSizeInventory(); ++var6) {
             ItemStack var7 = var5.getStackInSlot(var6);
             if (var7 != null) {
-                float var8 = this.field_28035_a.nextFloat() * 0.8F + 0.1F;
-                float var9 = this.field_28035_a.nextFloat() * 0.8F + 0.1F;
-                float var10 = this.field_28035_a.nextFloat() * 0.8F + 0.1F;
+                float var8 = this.random.nextFloat() * 0.8F + 0.1F;
+                float var9 = this.random.nextFloat() * 0.8F + 0.1F;
+                float var10 = this.random.nextFloat() * 0.8F + 0.1F;
 
                 while(var7.stackSize > 0) {
-                    int var11 = this.field_28035_a.nextInt(21) + 10;
+                    int var11 = this.random.nextInt(21) + 10;
                     if (var11 > var7.stackSize) {
                         var11 = var7.stackSize;
                     }
@@ -197,9 +197,9 @@ public class BlockDispenser extends BlockContainer {
                     var7.stackSize -= var11;
                     EntityItem var12 = new EntityItem(var1, (double)((float)var2 + var8), (double)((float)var3 + var9), (double)((float)var4 + var10), new ItemStack(var7.itemID, var11, var7.getItemDamage()));
                     float var13 = 0.05F;
-                    var12.motionX = (double)((float)this.field_28035_a.nextGaussian() * var13);
-                    var12.motionY = (double)((float)this.field_28035_a.nextGaussian() * var13 + 0.2F);
-                    var12.motionZ = (double)((float)this.field_28035_a.nextGaussian() * var13);
+                    var12.motionX = (double)((float)this.random.nextGaussian() * var13);
+                    var12.motionY = (double)((float)this.random.nextGaussian() * var13 + 0.2F);
+                    var12.motionZ = (double)((float)this.random.nextGaussian() * var13);
                     var1.entityJoinedWorld(var12);
                 }
             }

@@ -1,10 +1,8 @@
 package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
-import net.skidcode.gh.maybeaclient.Client;
 import net.skidcode.gh.maybeaclient.hacks.EntityESPHack;
 import net.skidcode.gh.maybeaclient.hacks.settings.SettingColor;
-import net.skidcode.gh.maybeaclient.shaders.Shaders;
 import net.skidcode.gh.maybeaclient.utils.RenderUtils;
 
 import org.lwjgl.opengl.GL11;
@@ -65,6 +63,7 @@ public class RenderLiving extends Render {
                     GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
                 }
             }
+
             if (EntityESPHack.instance.status && EntityESPHack.instance.shouldRender(entity)) {
 				float r, g, b;
 				EntityESPHack.currentlyRendering = true;

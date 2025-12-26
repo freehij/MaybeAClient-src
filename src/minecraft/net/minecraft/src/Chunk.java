@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -19,7 +20,7 @@ public class Chunk {
     public NibbleArray skylightMap;
     public NibbleArray blocklightMap;
     public byte[] heightMap;
-    public int field_1532_i;
+    public int lowestBlockHeight;
     public final int xPosition;
     public final int zPosition;
     public Map chunkTileEntityMap;
@@ -85,7 +86,7 @@ public class Chunk {
             }
         }
 
-        this.field_1532_i = var1;
+        this.lowestBlockHeight = var1;
         this.isModified = true;
     }
 
@@ -107,7 +108,7 @@ public class Chunk {
                     var1 = var4;
                 }
 
-                if (!this.worldObj.worldProvider.field_6478_e) {
+                if (!this.worldObj.worldProvider.hasNoSky) {
                     int var6 = 15;
                     int var7 = 127;
 
@@ -123,7 +124,7 @@ public class Chunk {
             }
         }
 
-        this.field_1532_i = var1;
+        this.lowestBlockHeight = var1;
 
         for(var2 = 0; var2 < 16; ++var2) {
             for(var3 = 0; var3 < 16; ++var3) {
@@ -133,7 +134,7 @@ public class Chunk {
 
         this.isModified = true;
     }
-
+    
     public Map newChunkTileEntityMap = new HashMap();
     public void importOldChunkTileEntities()
     {
@@ -221,8 +222,8 @@ public class Chunk {
             int var7;
             int var8;
             int var9;
-            if (var5 < this.field_1532_i) {
-                this.field_1532_i = var5;
+            if (var5 < this.lowestBlockHeight) {
+                this.lowestBlockHeight = var5;
             } else {
                 var7 = 127;
 
@@ -234,7 +235,7 @@ public class Chunk {
                     }
                 }
 
-                this.field_1532_i = var7;
+                this.lowestBlockHeight = var7;
             }
 
             var7 = this.xPosition * 16 + var1;
@@ -298,7 +299,7 @@ public class Chunk {
             }
 
             this.data.setNibble(var1, var2, var3, var5);
-            if (!this.worldObj.worldProvider.field_6478_e) {
+            if (!this.worldObj.worldProvider.hasNoSky) {
                 if (Block.lightOpacity[var6 & 255] != 0) {
                     if (var2 >= var7) {
                         this.func_1003_g(var1, var2 + 1, var3);
@@ -462,14 +463,23 @@ public class Chunk {
             var5 = (TileEntity)this.chunkTileEntityMap.get(var4);
         }
 
-        return var5;
+        if (var5 != null && var5.func_31006_g()) {
+            this.chunkTileEntityMap.remove(var4);
+            return null;
+        } else {
+            return var5;
+        }
     }
 
-    public void func_1001_a(TileEntity var1) {
+    public void addTileEntity(TileEntity var1) {
         int var2 = var1.xCoord - this.xPosition * 16;
         int var3 = var1.yCoord;
         int var4 = var1.zCoord - this.zPosition * 16;
         this.setChunkBlockTileEntity(var2, var3, var4, var1);
+        if (this.isChunkLoaded) {
+            this.worldObj.loadedTileEntityList.add(var1);
+        }
+
     }
 
     public void setChunkBlockTileEntity(int var1, int var2, int var3, TileEntity var4) {
@@ -479,14 +489,7 @@ public class Chunk {
         var4.yCoord = var2;
         var4.zCoord = this.zPosition * 16 + var3;
         if (this.getBlockID(var1, var2, var3) != 0 && Block.blocksList[this.getBlockID(var1, var2, var3)] instanceof BlockContainer) {
-            if (this.isChunkLoaded) {
-                if (this.chunkTileEntityMap.get(var5) != null) {
-                    this.worldObj.loadedTileEntityList.remove(this.chunkTileEntityMap.get(var5));
-                }
-
-                this.worldObj.loadedTileEntityList.add(var4);
-            }
-
+            var4.func_31004_j();
             this.chunkTileEntityMap.put(var5, var4);
         } else {
             System.out.println("Attempted to place a tile entity where there was no entity tile!");
@@ -496,14 +499,17 @@ public class Chunk {
     public void removeChunkBlockTileEntity(int var1, int var2, int var3) {
         ChunkPosition var4 = new ChunkPosition(var1, var2, var3);
         if (this.isChunkLoaded) {
-            this.worldObj.loadedTileEntityList.remove(this.chunkTileEntityMap.remove(var4));
+            TileEntity var5 = (TileEntity)this.chunkTileEntityMap.remove(var4);
+            if (var5 != null) {
+                var5.func_31005_i();
+            }
         }
 
     }
 
     public void onChunkLoad() {
         this.isChunkLoaded = true;
-        this.worldObj.loadedTileEntityList.addAll(this.chunkTileEntityMap.values());
+        this.worldObj.func_31054_a(this.chunkTileEntityMap.values());
 
         for(int var1 = 0; var1 < this.entities.length; ++var1) {
             this.worldObj.func_636_a(this.entities[var1]);
@@ -513,10 +519,15 @@ public class Chunk {
 
     public void onChunkUnload() {
         this.isChunkLoaded = false;
-        this.worldObj.loadedTileEntityList.removeAll(this.chunkTileEntityMap.values());
+        Iterator var1 = this.chunkTileEntityMap.values().iterator();
 
-        for(int var1 = 0; var1 < this.entities.length; ++var1) {
-            this.worldObj.func_632_b(this.entities[var1]);
+        while(var1.hasNext()) {
+            TileEntity var2 = (TileEntity)var1.next();
+            var2.func_31005_i();
+        }
+
+        for(int var3 = 0; var3 < this.entities.length; ++var3) {
+            this.worldObj.func_632_b(this.entities[var3]);
         }
 
     }
@@ -641,6 +652,7 @@ public class Chunk {
                 var8 += var12;
             }
         }
+
         isFilled = true;
         return var8;
     }

@@ -136,7 +136,7 @@ public class StatsSyncher {
         }
     }
 
-    public void func_27407_b(Map var1) {
+    public void syncStatsFileWithMap(Map var1) {
         int var2 = 30;
 
         while(this.field_27438_a) {

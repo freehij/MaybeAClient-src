@@ -269,7 +269,7 @@ public class InventoryPlayer implements IInventory {
     }
 
     public boolean canHarvestBlock(Block var1) {
-        if (var1.blockMaterial != Material.rock && var1.blockMaterial != Material.iron && var1.blockMaterial != Material.builtSnow && var1.blockMaterial != Material.snow) {
+        if (var1.blockMaterial.getIsHarvestable()) {
             return true;
         } else {
             ItemStack var2 = this.getStackInSlot(this.currentItem);

@@ -46,7 +46,7 @@ public class Packet130UpdateSign extends Packet {
     }
 
     public void processPacket(NetHandler var1) {
-        var1.func_20093_a(this);
+        var1.handleSignUpdate(this);
     }
 
     public int getPacketSize() {

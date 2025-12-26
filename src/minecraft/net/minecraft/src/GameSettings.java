@@ -142,7 +142,7 @@ public class GameSettings {
             this.mc.renderEngine.refreshTextures();
         }
 
-        if (var1 == EnumOptions.LIMIT_FRAMERATE) {
+        if (var1 == EnumOptions.FRAMERATE_LIMIT) {
             this.limitFramerate = (this.limitFramerate + var2 + 3) % 3;
         }
 
@@ -213,7 +213,7 @@ public class GameSettings {
             return var3 + var2.translateKey(DIFFICULTIES[this.difficulty]);
         } else if (var1 == EnumOptions.GUI_SCALE) {
             return var3 + var2.translateKey(GUISCALES[this.guiScale]);
-        } else if (var1 == EnumOptions.LIMIT_FRAMERATE) {
+        } else if (var1 == EnumOptions.FRAMERATE_LIMIT) {
             return var3 + StatCollector.translateToLocal(LIMIT_FRAMERATES[this.limitFramerate]);
         } else if (var1 == EnumOptions.GRAPHICS) {
             return this.fancyGraphics ? var3 + var2.translateKey("options.graphics.fancy") : var3 + var2.translateKey("options.graphics.fast");

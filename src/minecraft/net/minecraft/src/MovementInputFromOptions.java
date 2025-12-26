@@ -35,7 +35,7 @@ public class MovementInputFromOptions extends MovementInput {
         if (var1 == this.gameSettings.keyBindSneak.keyCode) {
             var3 = 5;
         }
-        
+
         if(Client.mc.inGameHasFocus) Client.onKeyPress(var1, var2);
         
         if (var3 >= 0) {

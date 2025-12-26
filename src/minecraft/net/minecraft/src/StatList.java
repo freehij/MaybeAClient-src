@@ -67,7 +67,7 @@ public class StatList {
 
             while(var1.hasNext()) {
                 IRecipe var2 = (IRecipe)var1.next();
-                var0.add(var2.func_25117_b().itemID);
+                var0.add(var2.getRecipeOutput().itemID);
             }
 
             var1 = FurnaceRecipes.smelting().getSmeltingList().values().iterator();

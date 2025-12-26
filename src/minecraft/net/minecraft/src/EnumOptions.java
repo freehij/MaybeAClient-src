@@ -9,7 +9,7 @@ public enum EnumOptions {
     VIEW_BOBBING("options.viewBobbing", false, true),
     ANAGLYPH("options.anaglyph", false, true),
     ADVANCED_OPENGL("options.advancedOpengl", false, true),
-    LIMIT_FRAMERATE("options.framerateLimit", false, false),
+    FRAMERATE_LIMIT("options.framerateLimit", false, false),
     DIFFICULTY("options.difficulty", false, false),
     GRAPHICS("options.graphics", false, false),
     AMBIENT_OCCLUSION("options.ao", false, true),

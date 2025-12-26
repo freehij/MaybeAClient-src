@@ -27,6 +27,7 @@ public class MouseHelper {
         } catch (LWJGLException var5) {
             var5.printStackTrace();
         }*/
+
         if(Client.debug) ;
     }
 

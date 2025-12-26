@@ -27,20 +27,20 @@ public class MapItemRenderer {
             if (var5 / 4 == 0) {
                 this.field_28159_a[var4] = (var4 + var4 / 128 & 1) * 8 + 16 << 24;
             } else {
-                int baseColor = MapColor.mapColorArray[var5 / 4].colorValue;
-                int height = var5 & 3;
+                int var6 = MapColor.mapColorArray[var5 / 4].colorValue;
+                int var7 = var5 & 3;
                 short var8 = 220;
-                if (height == 2) {
+                if (var7 == 2) {
                     var8 = 255;
                 }
 
-                if (height == 0) {
+                if (var7 == 0) {
                     var8 = 180;
                 }
 
-                int var9 = (baseColor >> 16 & 255) * var8 / 255;
-                int var10 = (baseColor >> 8 & 255) * var8 / 255;
-                int var11 = (baseColor & 255) * var8 / 255;
+                int var9 = (var6 >> 16 & 255) * var8 / 255;
+                int var10 = (var6 >> 8 & 255) * var8 / 255;
+                int var11 = (var6 & 255) * var8 / 255;
                 if (this.field_28161_c.anaglyph) {
                     int var12 = (var9 * 30 + var10 * 59 + var11 * 11) / 100;
                     int var13 = (var9 * 30 + var10 * 70) / 100;

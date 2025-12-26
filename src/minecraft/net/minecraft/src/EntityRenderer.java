@@ -144,7 +144,7 @@ public class EntityRenderer {
             }
         }
     }
-
+    
     boolean isHand = false;
     private float getFOVModifier(float var1) {
     	EntityLiving var2 = this.mc.renderViewEntity;
@@ -268,6 +268,7 @@ public class EntityRenderer {
                 {
                 	GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
                 }
+
                 GL11.glRotatef(var2.rotationPitch - var13, 1.0F, 0.0F, 0.0F);
                 GL11.glRotatef(var2.rotationYaw - var28, 0.0F, 1.0F, 0.0F);
                 GL11.glTranslatef(0.0F, 0.0F, (float)(-var27));
@@ -430,7 +431,6 @@ public class EntityRenderer {
                     }
                 }
 
-                
                 this.field_28133_I = System.nanoTime();
                 if (!this.mc.gameSettings.hideGUI || this.mc.currentScreen != null) {
                     this.mc.ingameGUI.renderGameOverlay(var1, this.mc.currentScreen != null, var16, var17);
@@ -547,11 +547,7 @@ public class EntityRenderer {
             GL11.glShadeModel(7424 /*GL_FLAT*/);
             RenderHelper.enableStandardItemLighting();
             if(Client.fbEnabled) Client.fb_entityTop.clear();
-            //Client.fb_nametags.startRendering();
             var5.renderEntities(var4.getPosition(var1), var19, var1);
-            //Client.fb_nametags.endRendering();
-            //Client.fb_nametags.renderOnScreen();
-            
             var6.func_1187_b(var4, var1);
             RenderHelper.disableStandardItemLighting();
             this.setupFog(0, var1);
@@ -612,7 +608,7 @@ public class EntityRenderer {
             GL11.glDisable(2912 /*GL_FOG*/);
             if (this.pointedEntity != null) {
             }
-            
+
             this.setupFog(0, var1);
             GL11.glEnable(2912 /*GL_FOG*/);
             if(NoRenderHack.instance.status && NoRenderHack.instance.clouds.value) {}
@@ -622,23 +618,21 @@ public class EntityRenderer {
             	GL11.glPopMatrix();
             }
             GL11.glDisable(2912 /*GL_FOG*/);
+
             
             EventWorldRenderPreFog ev = new EventWorldRenderPreFog(var1);
             EventRegistry.handleEvent(ev);
             
             this.setupFog(1, var1);
-            
             if (this.cameraZoom == 1.0D) {
                 GL11.glClear(256);
                 this.func_4135_b(var1, var18);
             }
 
             if (!this.mc.gameSettings.anaglyph) {
-            	
-            	if(LockTimeHack.INSTANCE.status) {
+                if(LockTimeHack.INSTANCE.status) {
                 	mc.theWorld.worldInfo.setWorldTime(oldTime);
                 }
-            	
                 return;
             }
         }
@@ -651,7 +645,7 @@ public class EntityRenderer {
 
     private void addRainParticles() {
     	if(NoRenderHack.instance.status && NoRenderHack.instance.weather.getValue()) return;
-    	float var1 = this.mc.theWorld.func_27162_g(1.0F);
+        float var1 = this.mc.theWorld.func_27162_g(1.0F);
         if (!this.mc.gameSettings.fancyGraphics) {
             var1 /= 2.0F;
         }

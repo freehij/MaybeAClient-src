@@ -15,10 +15,14 @@ public class GuiTexturePacks extends GuiScreen {
     private int field_6454_o = -1;
     private String fileLocation = "";
     private GuiTexturePackSlot guiTexturePackSlot;
+    
+    public boolean fillBg = true;
+    
+
     public GuiTexturePacks(GuiScreen var1) {
     	this(var1, true);
     }
-    public boolean fillBg = true;
+    
     public GuiTexturePacks(GuiScreen var1, boolean fillBg) {
         this.guiScreen = var1;
         this.fillBg = fillBg;
@@ -39,7 +43,7 @@ public class GuiTexturePacks extends GuiScreen {
             if (var1.id == 5) {
                 Sys.openURL("file://" + this.fileLocation);
             } else if (var1.id == 6) {
-                //this.mc.renderEngine.refreshTextures();
+                this.mc.renderEngine.refreshTextures();
                 this.mc.displayGuiScreen(this.guiScreen);
             } else {
                 this.guiTexturePackSlot.actionPerformed(var1);
@@ -72,5 +76,65 @@ public class GuiTexturePacks extends GuiScreen {
     public void updateScreen() {
         super.updateScreen();
         --this.field_6454_o;
+    }
+
+    // $FF: synthetic method
+    static Minecraft func_22124_a(GuiTexturePacks var0) {
+        return var0.mc;
+    }
+
+    // $FF: synthetic method
+    static Minecraft func_22126_b(GuiTexturePacks var0) {
+        return var0.mc;
+    }
+
+    // $FF: synthetic method
+    static Minecraft func_22119_c(GuiTexturePacks var0) {
+        return var0.mc;
+    }
+
+    // $FF: synthetic method
+    static Minecraft func_22122_d(GuiTexturePacks var0) {
+        return var0.mc;
+    }
+
+    // $FF: synthetic method
+    static Minecraft func_22117_e(GuiTexturePacks var0) {
+        return var0.mc;
+    }
+
+    // $FF: synthetic method
+    static Minecraft func_22118_f(GuiTexturePacks var0) {
+        return var0.mc;
+    }
+
+    // $FF: synthetic method
+    static Minecraft func_22116_g(GuiTexturePacks var0) {
+        return var0.mc;
+    }
+
+    // $FF: synthetic method
+    static Minecraft func_22121_h(GuiTexturePacks var0) {
+        return var0.mc;
+    }
+
+    // $FF: synthetic method
+    static Minecraft func_22123_i(GuiTexturePacks var0) {
+        return var0.mc;
+    }
+
+    // $FF: synthetic method
+    static FontRenderer func_22127_j(GuiTexturePacks var0) {
+        return var0.fontRenderer;
+    }
+
+    // $FF: synthetic method
+    static FontRenderer func_22120_k(GuiTexturePacks var0) {
+        return var0.fontRenderer;
+    }
+
+    // $FF: synthetic method
+    static FontRenderer func_22125_l(GuiTexturePacks var0) {
+        return var0.fontRenderer;
     }
 }

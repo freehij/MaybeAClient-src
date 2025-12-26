@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 public abstract class GuiSlot {
 	static {
-		Client.class.getClass(); //all private was changed to public
+		Client.class.getClass(); //all public was changed to public
 	}
     public final Minecraft mc;
     public final int width;
@@ -192,16 +192,16 @@ public abstract class GuiSlot {
         Tessellator var16 = Tessellator.instance;
         Client.class.getClass();
         if(!(this instanceof GuiTexturePackSlot) || (((GuiTexturePackSlot)this).parentTexturePackGui.fillBg)) {
-	        GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/gui/background.png"));
-	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-	        float var17 = 32.0F;
-	        var16.startDrawingQuads();
-	        var16.setColorOpaque_I(2105376);
-	        var16.addVertexWithUV((double)this.left, (double)this.bottom, 0.0D, (double)((float)this.left / var17), (double)((float)(this.bottom + (int)this.amountScrolled) / var17));
-	        var16.addVertexWithUV((double)this.right, (double)this.bottom, 0.0D, (double)((float)this.right / var17), (double)((float)(this.bottom + (int)this.amountScrolled) / var17));
-	        var16.addVertexWithUV((double)this.right, (double)this.top, 0.0D, (double)((float)this.right / var17), (double)((float)(this.top + (int)this.amountScrolled) / var17));
-	        var16.addVertexWithUV((double)this.left, (double)this.top, 0.0D, (double)((float)this.left / var17), (double)((float)(this.top + (int)this.amountScrolled) / var17));
-	        var16.draw();
+            GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/gui/background.png"));
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            float var17 = 32.0F;
+            var16.startDrawingQuads();
+            var16.setColorOpaque_I(2105376);
+            var16.addVertexWithUV((double)this.left, (double)this.bottom, 0.0D, (double)((float)this.left / var17), (double)((float)(this.bottom + (int)this.amountScrolled) / var17));
+            var16.addVertexWithUV((double)this.right, (double)this.bottom, 0.0D, (double)((float)this.right / var17), (double)((float)(this.bottom + (int)this.amountScrolled) / var17));
+            var16.addVertexWithUV((double)this.right, (double)this.top, 0.0D, (double)((float)this.right / var17), (double)((float)(this.top + (int)this.amountScrolled) / var17));
+            var16.addVertexWithUV((double)this.left, (double)this.top, 0.0D, (double)((float)this.left / var17), (double)((float)(this.top + (int)this.amountScrolled) / var17));
+            var16.draw();
         }else {
         	GuiScreen.drawGradientRect(this.left, this.top, this.right, this.bottom, -1072689136, -804253680);
         }

@@ -25,7 +25,7 @@ public class Gui {
         this.drawRect(var1, var2 + 1, var1 + 1, var3, var4);
     }
 
-    protected void drawRect(int var1, int var2, int var3, int var4, int var5) {
+    protected static void drawRect(int var1, int var2, int var3, int var4, int var5) {
         int var6;
         if (var1 < var3) {
             var6 = var1;

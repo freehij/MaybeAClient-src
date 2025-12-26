@@ -156,7 +156,7 @@ public abstract class NetHandler {
         this.registerPacket(var1);
     }
 
-    public void func_20093_a(Packet130UpdateSign var1) {
+    public void handleSignUpdate(Packet130UpdateSign var1) {
         this.registerPacket(var1);
     }
 
@@ -176,7 +176,7 @@ public abstract class NetHandler {
         this.registerPacket(var1);
     }
 
-    public void func_21145_a(Packet54PlayNoteBlock var1) {
+    public void handleNotePlay(Packet54PlayNoteBlock var1) {
         this.registerPacket(var1);
     }
 

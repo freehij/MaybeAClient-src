@@ -34,7 +34,7 @@ public abstract class EntityPlayer extends EntityLiving {
     public float field_22061_z;
     private ChunkCoordinates playerSpawnCoordinate;
     private ChunkCoordinates startMinecartRidingCoordinate;
-    public int field_28024_y = 20;
+    public int timeUntilPortal = 20;
     protected boolean inPortal = false;
     public float timeInPortal;
     public float prevTimeInPortal;
@@ -74,7 +74,7 @@ public abstract class EntityPlayer extends EntityLiving {
         		isDay = this.worldObj.calculateSkylightSubtracted(1.0f) < 4;
         		this.worldObj.setWorldTime(oldtime);
         	}
-        	
+
             if (!this.worldObj.multiplayerWorld) {
                 if (!this.isInBed()) {
                     this.wakeUpPlayer(true, true, false);
@@ -91,7 +91,7 @@ public abstract class EntityPlayer extends EntityLiving {
 
         super.onUpdate();
         if (!this.worldObj.multiplayerWorld && this.craftingInventory != null && !this.craftingInventory.isUsableByPlayer(this)) {
-            this.func_20059_m();
+            this.closeScreen();
             this.craftingInventory = this.inventorySlots;
         }
 
@@ -140,7 +140,7 @@ public abstract class EntityPlayer extends EntityLiving {
         return this.health <= 0 || this.isPlayerSleeping();
     }
 
-    protected void func_20059_m() {
+    protected void closeScreen() {
         this.craftingInventory = this.inventorySlots;
     }
 
@@ -217,7 +217,7 @@ public abstract class EntityPlayer extends EntityLiving {
                 for(int var4 = 0; var4 < var3.size(); ++var4) {
                     Entity var5 = (Entity)var3.get(var4);
                     if (!var5.isDead) {
-                        this.func_451_h(var5);
+                        this.collideWithPlayer(var5);
                     }
                 }
             }
@@ -225,7 +225,7 @@ public abstract class EntityPlayer extends EntityLiving {
 
     }
 
-    private void func_451_h(Entity var1) {
+    private void collideWithPlayer(Entity var1) {
         var1.onCollideWithPlayer(this);
     }
 
@@ -684,10 +684,10 @@ public abstract class EntityPlayer extends EntityLiving {
 
     public static ChunkCoordinates func_25060_a(World var0, ChunkCoordinates var1) {
         IChunkProvider var2 = var0.getIChunkProvider();
-        var2.func_538_d(var1.x - 3 >> 4, var1.z - 3 >> 4);
-        var2.func_538_d(var1.x + 3 >> 4, var1.z - 3 >> 4);
-        var2.func_538_d(var1.x - 3 >> 4, var1.z + 3 >> 4);
-        var2.func_538_d(var1.x + 3 >> 4, var1.z + 3 >> 4);
+        var2.prepareChunk(var1.x - 3 >> 4, var1.z - 3 >> 4);
+        var2.prepareChunk(var1.x + 3 >> 4, var1.z - 3 >> 4);
+        var2.prepareChunk(var1.x - 3 >> 4, var1.z + 3 >> 4);
+        var2.prepareChunk(var1.x + 3 >> 4, var1.z + 3 >> 4);
         if (var0.getBlockId(var1.x, var1.y, var1.z) != Block.blockBed.blockID) {
             return null;
         } else {
@@ -841,8 +841,8 @@ public abstract class EntityPlayer extends EntityLiving {
     }
 
     public void setInPortal() {
-        if (this.field_28024_y > 0) {
-            this.field_28024_y = 10;
+        if (this.timeUntilPortal > 0) {
+            this.timeUntilPortal = 10;
         } else {
             this.inPortal = true;
         }

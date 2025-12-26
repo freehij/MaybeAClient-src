@@ -52,14 +52,14 @@ public class Block {
     public static final Block blockBed;
     public static final Block railPowered;
     public static final Block railDetector;
-    public static final Block field_9259_V;
+    public static final Block pistonStickyBase;
     public static final Block web;
     public static final BlockTallGrass tallGrass;
     public static final BlockDeadBush deadBush;
-    public static final Block field_9255_Z;
-    public static final Block field_9269_aa;
+    public static final Block pistonBase;
+    public static final BlockPistonExtension pistonExtension;
     public static final Block cloth;
-    public static final Block field_9268_ac;
+    public static final BlockPistonMoving pistonMoving;
     public static final BlockFlower plantYellow;
     public static final BlockFlower plantRed;
     public static final BlockFlower mushroomBrown;
@@ -124,7 +124,7 @@ public class Block {
     public final int blockID;
     public float blockHardness;
     protected float blockResistance;
-    protected boolean field_27035_bo;
+    protected boolean blockConstructorCalled;
     protected boolean enableStats;
     public double minX;
     public double minY;
@@ -139,7 +139,7 @@ public class Block {
     private String blockName;
 
     protected Block(int var1, Material var2) {
-        this.field_27035_bo = true;
+        this.blockConstructorCalled = true;
         this.enableStats = true;
         this.stepSound = soundPowderFootstep;
         this.blockParticleGravity = 1.0F;
@@ -158,12 +158,12 @@ public class Block {
         }
     }
 
-    private Block disableNeighborNotifyOnMetadataChange() {
+    protected Block disableNeighborNotifyOnMetadataChange() {
         field_28032_t[this.blockID] = true;
         return this;
     }
 
-    protected void preRenderSlimeSize() {
+    protected void initializeBlock() {
     }
 
     protected Block(int var1, int var2, Material var3) {
@@ -208,6 +208,15 @@ public class Block {
         return this;
     }
 
+    protected Block setBlockUnbreakable() {
+        this.setHardness(-1.0F);
+        return this;
+    }
+
+    public float getHardness() {
+        return this.blockHardness;
+    }
+
     protected Block setTickOnLoad(boolean var1) {
         tickOnLoad[this.blockID] = var1;
         return this;
@@ -223,8 +232,9 @@ public class Block {
     }
 
     public float getBlockBrightness(IBlockAccess var1, int var2, int var3, int var4) {
-    	if(FullBrightHack.INSTANCE.status || XRayHack.INSTANCE.status) return 1.0f;
-    	return var1.getBrightness(var2, var3, var4, lightValue[this.blockID]);
+    	if(XRayHack.INSTANCE.status) return 1.0f;
+    	if(FullBrightHack.INSTANCE.status) return Math.max(FullBrightHack.INSTANCE.brightness.getValue(), var1.getBrightness(var2, var3, var4, lightValue[this.blockID]));
+        return var1.getBrightness(var2, var3, var4, lightValue[this.blockID]);
     }
 
     public boolean shouldSideBeRendered(IBlockAccess var1, int var2, int var3, int var4, int var5) {
@@ -232,7 +242,7 @@ public class Block {
     		return XRayHack.INSTANCE.blockChooser.blocks[this.blockID];
     	}
     	
-    	if (var5 == 0 && this.minY > 0.0D) {
+        if (var5 == 0 && this.minY > 0.0D) {
             return true;
         } else if (var5 == 1 && this.maxY < 1.0D) {
             return true;
@@ -331,7 +341,7 @@ public class Block {
         }
     }
 
-    public void dropBlockAsItem(World var1, int var2, int var3, int var4, int var5) {
+    public final void dropBlockAsItem(World var1, int var2, int var3, int var4, int var5) {
         this.dropBlockAsItemWithChance(var1, var2, var3, var4, var5, 1.0F);
     }
 
@@ -343,17 +353,23 @@ public class Block {
                 if (var1.rand.nextFloat() <= var6) {
                     int var9 = this.idDropped(var5, var1.rand);
                     if (var9 > 0) {
-                        float var10 = 0.7F;
-                        double var11 = (double)(var1.rand.nextFloat() * var10) + (double)(1.0F - var10) * 0.5D;
-                        double var13 = (double)(var1.rand.nextFloat() * var10) + (double)(1.0F - var10) * 0.5D;
-                        double var15 = (double)(var1.rand.nextFloat() * var10) + (double)(1.0F - var10) * 0.5D;
-                        EntityItem var17 = new EntityItem(var1, (double)var2 + var11, (double)var3 + var13, (double)var4 + var15, new ItemStack(var9, 1, this.damageDropped(var5)));
-                        var17.delayBeforeCanPickup = 10;
-                        var1.entityJoinedWorld(var17);
+                        this.dropBlockAsItem_do(var1, var2, var3, var4, new ItemStack(var9, 1, this.damageDropped(var5)));
                     }
                 }
             }
 
+        }
+    }
+
+    protected void dropBlockAsItem_do(World var1, int var2, int var3, int var4, ItemStack var5) {
+        if (!var1.multiplayerWorld) {
+            float var6 = 0.7F;
+            double var7 = (double)(var1.rand.nextFloat() * var6) + (double)(1.0F - var6) * 0.5D;
+            double var9 = (double)(var1.rand.nextFloat() * var6) + (double)(1.0F - var6) * 0.5D;
+            double var11 = (double)(var1.rand.nextFloat() * var6) + (double)(1.0F - var6) * 0.5D;
+            EntityItem var13 = new EntityItem(var1, (double)var2 + var7, (double)var3 + var9, (double)var4 + var11, var5);
+            var13.delayBeforeCanPickup = 10;
+            var1.entityJoinedWorld(var13);
         }
     }
 
@@ -496,7 +512,7 @@ public class Block {
 
     public boolean canPlaceBlockAt(World var1, int var2, int var3, int var4) {
         int var5 = var1.getBlockId(var2, var3, var4);
-        return var5 == 0 || blocksList[var5].blockMaterial.func_27283_g();
+        return var5 == 0 || blocksList[var5].blockMaterial.getIsGroundCover();
     }
 
     public boolean blockActivated(World var1, int var2, int var3, int var4, EntityPlayer var5) {
@@ -516,6 +532,10 @@ public class Block {
     }
 
     public void setBlockBoundsBasedOnState(IBlockAccess var1, int var2, int var3, int var4) {
+    }
+
+    public int getRenderColor(int var1) {
+        return 16777215;
     }
 
     public int colorMultiplier(IBlockAccess var1, int var2, int var3, int var4) {
@@ -577,6 +597,10 @@ public class Block {
         return this;
     }
 
+    public int getMobilityFlag() {
+        return this.blockMaterial.getMaterialMobility();
+    }
+
     static {
         stone = (new BlockStone(1, 1)).setHardness(1.5F).setResistance(10.0F).setStepSound(soundStoneFootstep).setBlockName("stone");
         grass = (BlockGrass)(new BlockGrass(2)).setHardness(0.6F).setStepSound(soundGrassFootstep).setBlockName("grass");
@@ -584,7 +608,7 @@ public class Block {
         cobblestone = (new Block(4, 16, Material.rock)).setHardness(2.0F).setResistance(10.0F).setStepSound(soundStoneFootstep).setBlockName("stonebrick");
         planks = (new Block(5, 4, Material.wood)).setHardness(2.0F).setResistance(5.0F).setStepSound(soundWoodFootstep).setBlockName("wood").disableNeighborNotifyOnMetadataChange();
         sapling = (new BlockSapling(6, 15)).setHardness(0.0F).setStepSound(soundGrassFootstep).setBlockName("sapling").disableNeighborNotifyOnMetadataChange();
-        bedrock = (new Block(7, 17, Material.rock)).setHardness(-1.0F).setResistance(6000000.0F).setStepSound(soundStoneFootstep).setBlockName("bedrock").disableStats();
+        bedrock = (new Block(7, 17, Material.rock)).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(soundStoneFootstep).setBlockName("bedrock").disableStats();
         waterMoving = (new BlockFlowing(8, Material.water)).setHardness(100.0F).setLightOpacity(3).setBlockName("water").disableStats().disableNeighborNotifyOnMetadataChange();
         waterStill = (new BlockStationary(9, Material.water)).setHardness(100.0F).setLightOpacity(3).setBlockName("water").disableStats().disableNeighborNotifyOnMetadataChange();
         lavaMoving = (new BlockFlowing(10, Material.lava)).setHardness(0.0F).setLightValue(1.0F).setLightOpacity(255).setBlockName("lava").disableStats().disableNeighborNotifyOnMetadataChange();
@@ -606,14 +630,14 @@ public class Block {
         blockBed = (new BlockBed(26)).setHardness(0.2F).setBlockName("bed").disableStats().disableNeighborNotifyOnMetadataChange();
         railPowered = (new BlockRail(27, 179, true)).setHardness(0.7F).setStepSound(soundMetalFootstep).setBlockName("goldenRail").disableNeighborNotifyOnMetadataChange();
         railDetector = (new BlockDetectorRail(28, 195)).setHardness(0.7F).setStepSound(soundMetalFootstep).setBlockName("detectorRail").disableNeighborNotifyOnMetadataChange();
-        field_9259_V = null;
-        web = (new BlockWeb(30, 11)).setBlockName("web");
+        pistonStickyBase = (new BlockPistonBase(29, 106, true)).setBlockName("pistonStickyBase").disableNeighborNotifyOnMetadataChange();
+        web = (new BlockWeb(30, 11)).setLightOpacity(1).setHardness(4.0F).setBlockName("web");
         tallGrass = (BlockTallGrass)(new BlockTallGrass(31, 39)).setHardness(0.0F).setStepSound(soundGrassFootstep).setBlockName("tallgrass");
         deadBush = (BlockDeadBush)(new BlockDeadBush(32, 55)).setHardness(0.0F).setStepSound(soundGrassFootstep).setBlockName("deadbush");
-        field_9255_Z = null;
-        field_9269_aa = null;
+        pistonBase = (new BlockPistonBase(33, 107, false)).setBlockName("pistonBase").disableNeighborNotifyOnMetadataChange();
+        pistonExtension = (BlockPistonExtension)(new BlockPistonExtension(34, 107)).disableNeighborNotifyOnMetadataChange();
         cloth = (new BlockCloth()).setHardness(0.8F).setStepSound(soundClothFootstep).setBlockName("cloth").disableNeighborNotifyOnMetadataChange();
-        field_9268_ac = null;
+        pistonMoving = new BlockPistonMoving(36);
         plantYellow = (BlockFlower)(new BlockFlower(37, 13)).setHardness(0.0F).setStepSound(soundGrassFootstep).setBlockName("flower");
         plantRed = (BlockFlower)(new BlockFlower(38, 12)).setHardness(0.0F).setStepSound(soundGrassFootstep).setBlockName("rose");
         mushroomBrown = (BlockFlower)(new BlockMushroom(39, 29)).setHardness(0.0F).setStepSound(soundGrassFootstep).setLightValue(0.125F).setBlockName("mushroom");
@@ -678,11 +702,14 @@ public class Block {
         Item.itemsList[wood.blockID] = (new ItemLog(wood.blockID - 256)).setItemName("log");
         Item.itemsList[stairSingle.blockID] = (new ItemSlab(stairSingle.blockID - 256)).setItemName("stoneSlab");
         Item.itemsList[sapling.blockID] = (new ItemSapling(sapling.blockID - 256)).setItemName("sapling");
+        Item.itemsList[leaves.blockID] = (new ItemLeaves(leaves.blockID - 256)).setItemName("leaves");
+        Item.itemsList[pistonBase.blockID] = new ItemPiston(pistonBase.blockID - 256);
+        Item.itemsList[pistonStickyBase.blockID] = new ItemPiston(pistonStickyBase.blockID - 256);
 
         for(int var0 = 0; var0 < 256; ++var0) {
             if (blocksList[var0] != null && Item.itemsList[var0] == null) {
                 Item.itemsList[var0] = new ItemBlock(var0 - 256);
-                blocksList[var0].preRenderSlimeSize();
+                blocksList[var0].initializeBlock();
             }
         }
 

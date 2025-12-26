@@ -33,7 +33,7 @@ public class GuiGameOver extends GuiScreen {
     }
 
     public void drawScreen(int var1, int var2, float var3) {
-        drawGradientRect(0, 0, this.width, this.height, 1615855616, -1602211792);
+        this.drawGradientRect(0, 0, this.width, this.height, 1615855616, -1602211792);
         GL11.glPushMatrix();
         GL11.glScalef(2.0F, 2.0F, 2.0F);
         this.drawCenteredString(this.fontRenderer, "Game over!", this.width / 2 / 2, 30, 16777215);

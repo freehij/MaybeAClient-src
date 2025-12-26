@@ -88,5 +88,6 @@ public class TextureWaterFX extends TextureFX {
             this.imageData[var2 * 4 + 3] = (byte)var8;
         }
         hasTexture = true;
+
     }
 }

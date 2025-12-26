@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.client.Minecraft;
 import net.skidcode.gh.maybeaclient.hacks.AutoMouseClickHack;
 import net.skidcode.gh.maybeaclient.hacks.ChestCheckerHack;
 import net.skidcode.gh.maybeaclient.hacks.InventoryWalkHack;
-import net.minecraft.client.Minecraft;
 import net.skidcode.gh.maybeaclient.hacks.TooltipsHack;
 
 public abstract class GuiContainer extends GuiScreen {
@@ -50,16 +50,6 @@ public abstract class GuiContainer extends GuiScreen {
     		super.actionPerformed(gb);
     	}
     }
-
-    @Override
-    public void handleKeyboardInput()
-    {
-    	super.handleKeyboardInput();
-    	
-    	if(InventoryWalkHack.instance.status) {
-    		mc.thePlayer.handleKeyPress(Keyboard.getEventKey(), Keyboard.getEventKeyState());
-    	}
-    }
     
     public void drawScreen(int var1, int var2, float var3) {
         this.drawDefaultBackground();
@@ -87,7 +77,7 @@ public abstract class GuiContainer extends GuiScreen {
                 GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
                 txtX = var8.xDisplayPosition;
                 txtY = var8.yDisplayPosition;
-                drawGradientRect(txtX, txtY, txtX + 16, txtY + 16, -2130706433, -2130706433);
+                this.drawGradientRect(txtX, txtY, txtX + 16, txtY + 16, -2130706433, -2130706433);
                 GL11.glEnable(2896 /*GL_LIGHTING*/);
                 GL11.glEnable(2929 /*GL_DEPTH_TEST*/);
             }
@@ -125,8 +115,9 @@ public abstract class GuiContainer extends GuiScreen {
                 		var13 += " ("+var6.getStack().itemID+":"+var6.getStack().getItemDamage()+")";
                 	}
                 }
+                
                 int var11 = this.fontRenderer.getStringWidth(var13);
-                drawGradientRect(txtX - 3, txtY - 3, txtX + var11 + 3, txtY + height + 3, -1073741824, -1073741824);
+                this.drawGradientRect(txtX - 3, txtY - 3, txtX + var11 + 3, txtY + height + 3, -1073741824, -1073741824);
                 this.fontRenderer.drawStringWithShadow(var13, txtX, txtY, -1);
                 if(TooltipsHack.instance.status) {
                 	txtY += 8;
@@ -212,7 +203,17 @@ public abstract class GuiContainer extends GuiScreen {
         }
 
     }
-
+    
+    @Override
+    public void handleKeyboardInput()
+    {
+    	super.handleKeyboardInput();
+    	
+    	if(InventoryWalkHack.instance.status) {
+    		mc.thePlayer.handleKeyPress(Keyboard.getEventKey(), Keyboard.getEventKeyState());
+    	}
+    }
+    
     protected void mouseMovedOrUp(int var1, int var2, int var3) {
         if (var3 == 0) {
         }
@@ -221,7 +222,7 @@ public abstract class GuiContainer extends GuiScreen {
 
     protected void keyTyped(char var1, int var2) {
         if (var2 == 1 || var2 == this.mc.gameSettings.keyBindInventory.keyCode) {
-            this.mc.thePlayer.func_20059_m();
+            this.mc.thePlayer.closeScreen();
         }
 
     }
@@ -241,7 +242,7 @@ public abstract class GuiContainer extends GuiScreen {
     public void updateScreen() {
         super.updateScreen();
         if (!this.mc.thePlayer.isEntityAlive() || this.mc.thePlayer.isDead) {
-            this.mc.thePlayer.func_20059_m();
+            this.mc.thePlayer.closeScreen();
         }
 
     }

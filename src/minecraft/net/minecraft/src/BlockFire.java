@@ -13,7 +13,7 @@ public class BlockFire extends Block {
         this.setTickOnLoad(true);
     }
 
-    public void preRenderSlimeSize() {
+    public void initializeBlock() {
         this.setBurnRate(Block.planks.blockID, 5, 20);
         this.setBurnRate(Block.fence.blockID, 5, 20);
         this.setBurnRate(Block.stairCompactPlanks.blockID, 5, 20);
@@ -70,7 +70,7 @@ public class BlockFire extends Block {
 
             var1.scheduleBlockUpdate(var2, var3, var4, this.blockID, this.tickRate());
             if (!var6 && !this.func_263_h(var1, var2, var3, var4)) {
-                if (!var1.func_28100_h(var2, var3 - 1, var4) || var7 > 3) {
+                if (!var1.isBlockNormalCube(var2, var3 - 1, var4) || var7 > 3) {
                     var1.setBlockWithNotify(var2, var3, var4, 0);
                 }
 
@@ -130,7 +130,7 @@ public class BlockFire extends Block {
             }
 
             if (var9) {
-                Block.tnt.onBlockDestroyedByPlayer(var1, var2, var3, var4, 0);
+                Block.tnt.onBlockDestroyedByPlayer(var1, var2, var3, var4, 1);
             }
         }
 
@@ -181,18 +181,18 @@ public class BlockFire extends Block {
     }
 
     public boolean canPlaceBlockAt(World var1, int var2, int var3, int var4) {
-        return var1.func_28100_h(var2, var3 - 1, var4) || this.func_263_h(var1, var2, var3, var4);
+        return var1.isBlockNormalCube(var2, var3 - 1, var4) || this.func_263_h(var1, var2, var3, var4);
     }
 
     public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {
-        if (!var1.func_28100_h(var2, var3 - 1, var4) && !this.func_263_h(var1, var2, var3, var4)) {
+        if (!var1.isBlockNormalCube(var2, var3 - 1, var4) && !this.func_263_h(var1, var2, var3, var4)) {
             var1.setBlockWithNotify(var2, var3, var4, 0);
         }
     }
 
     public void onBlockAdded(World var1, int var2, int var3, int var4) {
         if (var1.getBlockId(var2, var3 - 1, var4) != Block.obsidian.blockID || !Block.portal.tryToCreatePortal(var1, var2, var3, var4)) {
-            if (!var1.func_28100_h(var2, var3 - 1, var4) && !this.func_263_h(var1, var2, var3, var4)) {
+            if (!var1.isBlockNormalCube(var2, var3 - 1, var4) && !this.func_263_h(var1, var2, var3, var4)) {
                 var1.setBlockWithNotify(var2, var3, var4, 0);
             } else {
                 var1.scheduleBlockUpdate(var2, var3, var4, this.blockID, this.tickRate());
@@ -211,7 +211,7 @@ public class BlockFire extends Block {
         double var9;
         Client.class.getClass();
         //XXX farlands fixes
-        if (!var1.func_28100_h(var2, var3 - 1, var4) && !Block.fire.canBlockCatchFire(var1, var2, var3 - 1, var4)) {
+        if (!var1.isBlockNormalCube(var2, var3 - 1, var4) && !Block.fire.canBlockCatchFire(var1, var2, var3 - 1, var4)) {
             if (Block.fire.canBlockCatchFire(var1, var2 - 1, var3, var4)) {
                 for(var6 = 0; var6 < 2; ++var6) {
                     var7 = var2 + (double)var5.nextFloat() * 0.1D;

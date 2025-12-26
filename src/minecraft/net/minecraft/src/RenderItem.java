@@ -109,7 +109,7 @@ public class RenderItem extends Render {
 						var18 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / var27;
 						GL11.glTranslatef(var16, var17, var18);
 					}
-					this.renderBlocks.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage());
+					this.renderBlocks.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage(), entity.getEntityBrightness(var9));
 					
 					GL11.glStencilFunc(GL11.GL_EQUAL, 1, 0xF);
 					GL11.glStencilOp(GL11.GL_REPLACE, GL11.GL_REPLACE, GL11.GL_KEEP);
@@ -125,7 +125,7 @@ public class RenderItem extends Render {
 					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_CONSTANT_ALPHA);
 					GL11.glColor4f((float)r/255, (float)g/255, (float)b/255, 1);
 					
-					this.renderBlocks.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage());
+					this.renderBlocks.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage(), entity.getEntityBrightness(var9));
 						
 					GL11.glPopAttrib();
 					GL11.glPopMatrix();
@@ -169,7 +169,7 @@ public class RenderItem extends Render {
 					
 					GL11.glLineWidth(2f);
 					GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-					this.renderBlocks.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage());
+					this.renderBlocks.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage(), entity.getEntityBrightness(var9));
 					
 					
     		        GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -185,12 +185,12 @@ public class RenderItem extends Render {
     		        GL11.glStencilOp(GL11.GL_REPLACE, GL11.GL_REPLACE, GL11.GL_REPLACE);
     		        GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
     		        //renderBlocks.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage(), entityitem.getEntityBrightness(f1));
-    		        this.renderBlocks.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage());
+    		        this.renderBlocks.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage(), entity.getEntityBrightness(var9));
     		        GL11.glStencilFunc(GL11.GL_NEVER, 0, 0xF);
     		        GL11.glStencilOp(GL11.GL_REPLACE, GL11.GL_REPLACE, GL11.GL_REPLACE);
     		        GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
     		        //renderBlocks.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage(), entityitem.getEntityBrightness(f1));
-    		        this.renderBlocks.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage());
+    		        this.renderBlocks.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage(), entity.getEntityBrightness(var9));
     		        GL11.glStencilFunc(GL11.GL_EQUAL, 1, 0xF);
     		        GL11.glStencilOp(GL11.GL_KEEP, GL11.GL_KEEP, GL11.GL_KEEP);
     		        GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
@@ -199,7 +199,7 @@ public class RenderItem extends Render {
     		        GL11.glDisable(GL11.GL_DEPTH_TEST);
 
 		        	GL11.glColor4f(r, g, b, 1);
-		        	this.renderBlocks.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage());
+		        	this.renderBlocks.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage(), entity.getEntityBrightness(var9));
     		        GL11.glEnable(GL11.GL_DEPTH_TEST);
     		        GL11.glDepthMask(true);
     		        GL11.glDisable(GL11.GL_STENCIL_TEST);
@@ -226,7 +226,7 @@ public class RenderItem extends Render {
 	                    GL11.glTranslatef(var16, var17, var18);
 	                }
 	
-	                this.renderBlocks.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage());
+	                this.renderBlocks.renderBlockOnInventory(Block.blocksList[itemstack.itemID], itemstack.getItemDamage(), entity.getEntityBrightness(var9));
 	                GL11.glPopMatrix();
 	            }
             }
@@ -389,114 +389,52 @@ public class RenderItem extends Render {
         GL11.glPopMatrix();
     }
 
-    public void drawItemIntoGui(FontRenderer var1, RenderEngine var2, int id, int var4, int var5, int x, int y) {
-        if (id < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[id].getRenderType())) {
+    public void drawItemIntoGui(FontRenderer var1, RenderEngine var2, int var3, int var4, int var5, int var6, int var7) {
+        float var11;
+        if (var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType())) {
             var2.bindTexture(var2.getTexture("/terrain.png"));
-            Block var12 = Block.blocksList[id];
+            Block var14 = Block.blocksList[var3];
             GL11.glPushMatrix();
-            GL11.glTranslatef((float)(x - 2), (float)(y + 3), -3.0F);
+            GL11.glTranslatef((float)(var6 - 2), (float)(var7 + 3), -3.0F);
             GL11.glScalef(10.0F, 10.0F, 10.0F);
-            GL11.glTranslatef(1.0F, 0.5F, 8.0F);
+            GL11.glTranslatef(1.0F, 0.5F, 1.0F);
             GL11.glScalef(1.0F, 1.0F, -1.0F);
             GL11.glRotatef(210.0F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+            int var15 = Item.itemsList[var3].getColorFromDamage(var4);
+            var11 = (float)(var15 >> 16 & 255) / 255.0F;
+            float var12 = (float)(var15 >> 8 & 255) / 255.0F;
+            float var13 = (float)(var15 & 255) / 255.0F;
             if (this.field_27004_a) {
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                GL11.glColor4f(var11, var12, var13, 1.0F);
             }
 
             GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-            this.renderBlocks.renderBlockOnInventory(var12, var4);
+            this.renderBlocks.field_31088_b = this.field_27004_a;
+            this.renderBlocks.renderBlockOnInventory(var14, var4, 1.0F);
+            this.renderBlocks.field_31088_b = true;
             GL11.glPopMatrix();
         } else if (var5 >= 0) {
             GL11.glDisable(2896 /*GL_LIGHTING*/);
-            if (id < 256) {
+            if (var3 < 256) {
                 var2.bindTexture(var2.getTexture("/terrain.png"));
             } else {
                 var2.bindTexture(var2.getTexture("/gui/items.png"));
             }
 
-            int var8 = Item.itemsList[id].getColorFromDamage(var4);
+            int var8 = Item.itemsList[var3].getColorFromDamage(var4);
             float var9 = (float)(var8 >> 16 & 255) / 255.0F;
             float var10 = (float)(var8 >> 8 & 255) / 255.0F;
-            float var11 = (float)(var8 & 255) / 255.0F;
+            var11 = (float)(var8 & 255) / 255.0F;
             if (this.field_27004_a) {
                 GL11.glColor4f(var9, var10, var11, 1.0F);
             }
 
-            this.renderTexturedQuad(x, y, var5 % 16 * 16, var5 / 16 * 16, 16, 16);
+            this.renderTexturedQuad(var6, var7, var5 % 16 * 16, var5 / 16 * 16, 16, 16);
             GL11.glEnable(2896 /*GL_LIGHTING*/);
         }
 
         GL11.glEnable(2884 /*GL_CULL_FACE*/);
-    }
-    
-    public void renderItemForNametag(FontRenderer fr, RenderEngine eng, ItemStack stack, int x, int y) {
-        if (stack != null) {
-        	if (stack.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[stack.itemID].getRenderType())) {
-                eng.bindTexture(eng.getTexture("/terrain.png"));
-                Block var12 = Block.blocksList[stack.itemID];
-                GL11.glPushMatrix();
-                GL11.glTranslatef((float)(x - 2), (float)(y + 3), 0);
-                GL11.glScalef(10.0F, 10.0F, 10.0F);
-                GL11.glTranslatef(1.0F, 0.5F, 0.0F);
-                GL11.glRotatef(210.0F, 1.0F, 0.0F, 0.0F);
-                GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-                if (this.field_27004_a) {
-                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                }
-
-                GL11.glScalef(1.0F, 1.0F, 1.0F);
-                this.renderBlocks.renderBlockOnInventory(var12, stack.getItemDamage());
-                GL11.glPopMatrix();
-            } else if (stack.getIconIndex() >= 0) {
-                GL11.glDisable(2896 /*GL_LIGHTING*/);
-                if (stack.itemID < 256) {
-                	eng.bindTexture(eng.getTexture("/terrain.png"));
-                } else {
-                	eng.bindTexture(eng.getTexture("/gui/items.png"));
-                }
-
-                int var8 = Item.itemsList[stack.itemID].getColorFromDamage(stack.getItemDamage());
-                float var9 = (float)(var8 >> 16 & 255) / 255.0F;
-                float var10 = (float)(var8 >> 8 & 255) / 255.0F;
-                float var11 = (float)(var8 & 255) / 255.0F;
-                if (this.field_27004_a) {
-                    GL11.glColor4f(var9, var10, var11, 1.0F);
-                }
-
-                this.renderTexturedQuad(x, y, stack.getIconIndex() % 16 * 16, stack.getIconIndex() / 16 * 16, 16, 16);
-                GL11.glEnable(2896 /*GL_LIGHTING*/);
-            }
-
-            GL11.glEnable(2884 /*GL_CULL_FACE*/);
-        }
-    }
-    public void renderItemOverlayForNametags(FontRenderer var1, RenderEngine var2, ItemStack var3, int var4, int var5) {
-    	if (var3 != null) {
-            if (var3.stackSize > 1) {
-                String var6 = "" + var3.stackSize;
-                GL11.glDisable(2896 /*GL_LIGHTING*/);
-                var1.drawStringWithShadow(var6, var4 + 19 - 2 - var1.getStringWidth(var6), var5 + 6 + 3, 16777215);
-                GL11.glEnable(2896 /*GL_LIGHTING*/);
-            }
-
-            if (var3.isItemDamaged()) {
-                int var11 = (int)Math.round(13.0D - (double)var3.getItemDamageForDisplay() * 13.0D / (double)var3.getMaxDamage());
-                int var7 = (int)Math.round(255.0D - (double)var3.getItemDamageForDisplay() * 255.0D / (double)var3.getMaxDamage());
-                GL11.glDisable(2896 /*GL_LIGHTING*/);
-                GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
-                Tessellator var8 = Tessellator.instance;
-                int var9 = 255 - var7 << 16 | var7 << 8;
-                int var10 = (255 - var7) / 4 << 16 | 16128;
-                this.renderQuad(var8, var4 + 2, var5 + 13, 13, 2, 0);
-                this.renderQuad(var8, var4 + 2, var5 + 13, 12, 1, var10);
-                this.renderQuad(var8, var4 + 2, var5 + 13, var11, 1, var9);
-                GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
-                GL11.glEnable(2896 /*GL_LIGHTING*/);
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            }
-
-        }
     }
 
     public void renderItemIntoGUI(FontRenderer var1, RenderEngine var2, ItemStack var3, int var4, int var5) {
@@ -507,7 +445,7 @@ public class RenderItem extends Render {
 
     public void renderItemOverlayIntoGUI(FontRenderer var1, RenderEngine var2, ItemStack var3, int var4, int var5) {
         if (var3 != null) {
-            if (var3.stackSize > 1 || (Client.FORCE_STACK_DRAW && var3.stackSize != 1)) {
+        	if (var3.stackSize > 1 || (Client.FORCE_STACK_DRAW && var3.stackSize != 1)) {
                 String var6 = "" + var3.stackSize;
                 GL11.glDisable(2896 /*GL_LIGHTING*/);
                 GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
@@ -564,5 +502,47 @@ public class RenderItem extends Render {
     // $FF: bridge method
     public void doRender(Entity var1, double var2, double var4, double var6, float var8, float var9) {
         this.doRenderItem((EntityItem)var1, var2, var4, var6, var8, var9);
+    }
+
+	public void renderItemForNametag(FontRenderer fr, RenderEngine eng, ItemStack stack, int x, int y) {
+        if (stack != null) {
+        	if (stack.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[stack.itemID].getRenderType())) {
+                eng.bindTexture(eng.getTexture("/terrain.png"));
+                Block var12 = Block.blocksList[stack.itemID];
+                GL11.glPushMatrix();
+                GL11.glTranslatef((float)(x - 2), (float)(y + 3), 0);
+                GL11.glScalef(10.0F, 10.0F, 10.0F);
+                GL11.glTranslatef(1.0F, 0.5F, 0.0F);
+                GL11.glRotatef(210.0F, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+                if (this.field_27004_a) {
+                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                }
+
+                GL11.glScalef(1.0F, 1.0F, 1.0F);
+                this.renderBlocks.renderBlockOnInventory(var12, stack.getItemDamage(), 1.0f);
+                GL11.glPopMatrix();
+            } else if (stack.getIconIndex() >= 0) {
+                GL11.glDisable(2896 /*GL_LIGHTING*/);
+                if (stack.itemID < 256) {
+                	eng.bindTexture(eng.getTexture("/terrain.png"));
+                } else {
+                	eng.bindTexture(eng.getTexture("/gui/items.png"));
+                }
+
+                int var8 = Item.itemsList[stack.itemID].getColorFromDamage(stack.getItemDamage());
+                float var9 = (float)(var8 >> 16 & 255) / 255.0F;
+                float var10 = (float)(var8 >> 8 & 255) / 255.0F;
+                float var11 = (float)(var8 & 255) / 255.0F;
+                if (this.field_27004_a) {
+                    GL11.glColor4f(var9, var10, var11, 1.0F);
+                }
+
+                this.renderTexturedQuad(x, y, stack.getIconIndex() % 16 * 16, stack.getIconIndex() / 16 * 16, 16, 16);
+                GL11.glEnable(2896 /*GL_LIGHTING*/);
+            }
+
+            GL11.glEnable(2884 /*GL_CULL_FACE*/);
+        }
     }
 }

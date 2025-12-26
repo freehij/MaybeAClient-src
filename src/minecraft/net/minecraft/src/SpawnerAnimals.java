@@ -93,7 +93,7 @@ public final class SpawnerAnimals {
                                 var42 = var41.x;
                                 var18 = var41.y;
                                 var19 = var41.z;
-                            } while(var0.func_28100_h(var42, var18, var19));
+                            } while(var0.isBlockNormalCube(var42, var18, var19));
                         } while(var0.getBlockMaterial(var42, var18, var19) != var38.getCreatureMaterial());
 
                         int var20 = 0;
@@ -152,9 +152,9 @@ public final class SpawnerAnimals {
 
     public static boolean canCreatureTypeSpawnAtLocation(EnumCreatureType var0, World var1, int var2, int var3, int var4) {
         if (var0.getCreatureMaterial() == Material.water) {
-            return var1.getBlockMaterial(var2, var3, var4).getIsLiquid() && !var1.func_28100_h(var2, var3 + 1, var4);
+            return var1.getBlockMaterial(var2, var3, var4).getIsLiquid() && !var1.isBlockNormalCube(var2, var3 + 1, var4);
         } else {
-            return var1.func_28100_h(var2, var3 - 1, var4) && !var1.func_28100_h(var2, var3, var4) && !var1.getBlockMaterial(var2, var3, var4).getIsLiquid() && !var1.func_28100_h(var2, var3 + 1, var4);
+            return var1.isBlockNormalCube(var2, var3 - 1, var4) && !var1.isBlockNormalCube(var2, var3, var4) && !var1.getBlockMaterial(var2, var3, var4).getIsLiquid() && !var1.isBlockNormalCube(var2, var3 + 1, var4);
         }
     }
 
@@ -204,7 +204,7 @@ public final class SpawnerAnimals {
                 int var12 = var0.rand.nextInt(var6.length);
 
                 int var13;
-                for(var13 = var11; var13 > 2 && !var0.func_28100_h(var9, var13 - 1, var10); --var13) {
+                for(var13 = var11; var13 > 2 && !var0.isBlockNormalCube(var9, var13 - 1, var10); --var13) {
                 }
 
                 while(!canCreatureTypeSpawnAtLocation(EnumCreatureType.monster, var0, var9, var13, var10) && var13 < var11 + 16 && var13 < 128) {

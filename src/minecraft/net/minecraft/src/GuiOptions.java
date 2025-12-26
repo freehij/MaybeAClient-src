@@ -30,6 +30,7 @@ public class GuiOptions extends GuiScreen {
 
             ++var2;
         }
+
         Client.class.getClass();
         this.controlList.add(new GuiSmallButton(101, this.width / 2 - 155, this.height / 6 + 96 + 12, var1.translateKey("options.video")));
         this.controlList.add(new GuiSmallButton(102, this.width / 2 - 155 + 160, this.height / 6 + 96 + 12, "Texture Packs"));
@@ -58,6 +59,7 @@ public class GuiOptions extends GuiScreen {
             	this.mc.gameSettings.saveOptions();
             	this.mc.displayGuiScreen(new GuiTexturePacks(this, false));
             }
+
             if (var1.id == 200) {
                 this.mc.gameSettings.saveOptions();
                 this.mc.displayGuiScreen(this.parentScreen);

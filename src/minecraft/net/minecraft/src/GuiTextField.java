@@ -4,8 +4,8 @@ public class GuiTextField extends Gui {
     private final FontRenderer fontRenderer;
     public final int xPos;
     public final int yPos;
-    private final int width;
-    private final int height;
+    public final int width;
+    public final int height;
     private String text;
     private int maxStringLength;
     private int cursorCounter;
@@ -98,8 +98,8 @@ public class GuiTextField extends Gui {
     }
 
     public void drawRedTextBox() {
-        this.drawRect(this.xPos - 1, this.yPos - 1, this.xPos + this.width + 1, this.yPos + this.height + 1, 0xffFF5555);
-        this.drawRect(this.xPos, this.yPos, this.xPos + this.width, this.yPos + this.height, -16777216);
+        drawRect(this.xPos - 1, this.yPos - 1, this.xPos + this.width + 1, this.yPos + this.height + 1, 0xffFF5555);
+        drawRect(this.xPos, this.yPos, this.xPos + this.width, this.yPos + this.height, -16777216);
         if (this.isEnabled) {
             boolean var1 = this.isFocused && this.cursorCounter / 6 % 2 == 0;
             this.drawString(this.fontRenderer, this.text + (var1 ? "_" : ""), this.xPos + 4, this.yPos + (this.height - 8) / 2, 0xFF5555);

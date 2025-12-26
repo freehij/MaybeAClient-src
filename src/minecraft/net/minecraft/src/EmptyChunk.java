@@ -81,7 +81,7 @@ public class EmptyChunk extends Chunk {
         return null;
     }
 
-    public void func_1001_a(TileEntity var1) {
+    public void addTileEntity(TileEntity var1) {
     }
 
     public void setChunkBlockTileEntity(int var1, int var2, int var3, TileEntity var4) {

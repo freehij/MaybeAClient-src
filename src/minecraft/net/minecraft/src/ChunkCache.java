@@ -139,7 +139,7 @@ public class ChunkCache implements IBlockAccess {
         return var4 == null ? false : var4.isOpaqueCube();
     }
 
-    public boolean func_28100_h(int var1, int var2, int var3) {
+    public boolean isBlockNormalCube(int var1, int var2, int var3) {
         Block var4 = Block.blocksList[this.getBlockId(var1, var2, var3)];
         if (var4 == null) {
             return false;

@@ -2,8 +2,6 @@ package net.minecraft.src;
 
 import java.util.List;
 
-import net.skidcode.gh.maybeaclient.hacks.WeatherLockHack;
-
 public class WorldInfo {
     private long randomSeed;
     private int spawnX;

@@ -61,7 +61,7 @@ public class GuiAchievement extends Gui {
             GL11.glDepthMask(false);
             RenderHelper.disableStandardItemLighting();
             this.updateAchievementWindowScale();
-            String var1 = "Minecraft Beta 1.6.6   Unlicensed Copy :(";
+            String var1 = "Minecraft Beta 1.7.3   Unlicensed Copy :(";
             String var2 = "(Or logged in from another location)";
             String var3 = "Purchase at minecraft.net";
             this.theGame.fontRenderer.drawStringWithShadow(var1, 2, 2, 16777215);

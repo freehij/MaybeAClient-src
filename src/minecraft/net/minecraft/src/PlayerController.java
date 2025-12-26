@@ -36,7 +36,6 @@ public class PlayerController {
         }else {
         	var8 = var5.setBlockWithNotify(var1, var2, var3, 0);
         }
-        
         if (var6 != null && var8) {
             var6.onBlockDestroyedByPlayer(var5, var1, var2, var3, var7);
         }
@@ -88,7 +87,7 @@ public class PlayerController {
     public boolean sendPlaceBlock(EntityPlayer var1, World var2, ItemStack var3, int x, int y, int z, int var7) {
         int id = var2.getBlockId(x, y, z);
         
-        //XXX schematica
+      //XXX schematica
         {
 			Client.class.getClass();
         	WorldUtils.toBlockPos(x, y, z, var7);
@@ -98,6 +97,7 @@ public class PlayerController {
 	        Settings.instance().tryUpdating(tx, ty, tz);
         }
         if(TunnelESPHack.instance.status) TunnelESPHack.instance.forceCheckBlock(id, x, y, z);
+        
         if (id > 0 && Block.blocksList[id].blockActivated(var2, x, y, z, var1)) {
             return true;
         } else {

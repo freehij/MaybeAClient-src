@@ -13,7 +13,7 @@ public class TextureWaterFlowFX extends TextureFX {
         super(Block.waterMoving.blockIndexInTexture + 1);
         this.tileSize = 2;
     }
-    
+
     
     public boolean hasTexture = false;
     public void onTick() {
@@ -21,7 +21,7 @@ public class TextureWaterFlowFX extends TextureFX {
         if(this.hasTexture && NoRenderHack.instance.status && NoRenderHack.instance.waterAnim.value) {
         	return;
         }
-        
+
         int var1;
         int var2;
         float var3;

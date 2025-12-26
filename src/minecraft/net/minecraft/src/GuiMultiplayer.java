@@ -64,14 +64,6 @@ public class GuiMultiplayer extends GuiScreen {
         }
     }
 
-    public static int getPort(String var1, int var2) {
-        try {
-            return Integer.parseInt(var1.trim());
-        } catch (Exception var4) {
-            return var2;
-        }
-    }
-
     protected void keyTyped(char var1, int var2) {
         this.field_22111_h.textboxKeyTyped(var1, var2);
         if (var1 == '\r') {
@@ -95,5 +87,13 @@ public class GuiMultiplayer extends GuiScreen {
         this.drawString(this.fontRenderer, var4.translateKey("multiplayer.ipinfo"), this.width / 2 - 140, this.height / 4 - 60 + 60 + 36, 10526880);
         this.field_22111_h.drawTextBox();
         super.drawScreen(var1, var2, var3);
+    }
+
+    public static int getPort(String var1, int var2) {
+        try {
+            return Integer.parseInt(var1.trim());
+        } catch (Exception var4) {
+            return var2;
+        }
     }
 }

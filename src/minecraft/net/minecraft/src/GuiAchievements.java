@@ -309,7 +309,7 @@ public class GuiAchievements extends GuiScreen {
                     var37 += 12;
                 }
 
-                drawGradientRect(var17 - 3, var33 - 3, var17 + var34 + 3, var33 + var37 + 3 + 12, -1073741824, -1073741824);
+                this.drawGradientRect(var17 - 3, var33 - 3, var17 + var34 + 3, var33 + var37 + 3 + 12, -1073741824, -1073741824);
                 this.fontRenderer.func_27278_a(var32, var17, var33 + 12, var34, -6250336);
                 if (this.field_27120_x.hasAchievementUnlocked(var27)) {
                     this.fontRenderer.drawStringWithShadow(StatCollector.translateToLocal("achievement.taken"), var17, var33 + var37 + 4, -7302913);
@@ -318,7 +318,7 @@ public class GuiAchievements extends GuiScreen {
                 var34 = Math.max(this.fontRenderer.getStringWidth(var31), 120);
                 String var39 = StatCollector.translateToLocalFormatted("achievement.requires", var27.parentAchievement.statName);
                 var38 = this.fontRenderer.func_27277_a(var39, var34);
-                drawGradientRect(var17 - 3, var33 - 3, var17 + var34 + 3, var33 + var38 + 12 + 3, -1073741824, -1073741824);
+                this.drawGradientRect(var17 - 3, var33 - 3, var17 + var34 + 3, var33 + var38 + 12 + 3, -1073741824, -1073741824);
                 this.fontRenderer.func_27278_a(var39, var17, var33 + 12, var34, -9416624);
             }
 

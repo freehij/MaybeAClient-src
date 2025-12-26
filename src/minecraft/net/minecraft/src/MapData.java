@@ -79,9 +79,9 @@ public class MapData extends MapDataBase {
 
         for(int var14 = 0; var14 < this.field_28174_h.size(); ++var14) {
             MapInfo var4 = (MapInfo)this.field_28174_h.get(var14);
-            if (!var4.field_28120_a.isDead && var4.field_28120_a.inventory.func_28018_c(var2)) {
-                float var5 = (float)(var4.field_28120_a.posX - (double)this.field_28180_b) / (float)(1 << this.field_28177_e);
-                float var6 = (float)(var4.field_28120_a.posZ - (double)this.field_28179_c) / (float)(1 << this.field_28177_e);
+            if (!var4.entityplayerObj.isDead && var4.entityplayerObj.inventory.func_28018_c(var2)) {
+                float var5 = (float)(var4.entityplayerObj.posX - (double)this.field_28180_b) / (float)(1 << this.field_28177_e);
+                float var6 = (float)(var4.entityplayerObj.posZ - (double)this.field_28179_c) / (float)(1 << this.field_28177_e);
                 byte var7 = 64;
                 byte var8 = 64;
                 if (var5 >= (float)(-var7) && var6 >= (float)(-var8) && var5 <= (float)var7 && var6 <= (float)var8) {
@@ -94,12 +94,12 @@ public class MapData extends MapDataBase {
                         var12 = (byte)(var13 * var13 * 34187121 + var13 * 121 >> 15 & 15);
                     }
 
-                    if (var4.field_28120_a.dimension == this.field_28178_d) {
+                    if (var4.entityplayerObj.dimension == this.field_28178_d) {
                         this.field_28173_i.add(new MapCoord(this, var9, var10, var11, var12));
                     }
                 }
             } else {
-                this.field_28172_j.remove(var4.field_28120_a);
+                this.field_28172_j.remove(var4.entityplayerObj);
                 this.field_28174_h.remove(var4);
             }
         }

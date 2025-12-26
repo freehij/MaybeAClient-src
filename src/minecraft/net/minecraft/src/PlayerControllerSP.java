@@ -20,14 +20,14 @@ public class PlayerControllerSP extends PlayerController {
         super(var1);
     }
 
-    public void flipPlayer(EntityPlayer var1) {
-        var1.rotationYaw = -180.0F;
-    }
 
     public boolean isBeingUsed() {
     	return this.field_1073_d != -1; //no need to check others
     }
-    
+    public void flipPlayer(EntityPlayer var1) {
+        var1.rotationYaw = -180.0F;
+    }
+
     public boolean sendBlockRemoved(int x, int y, int z, int var4) {
         int id = this.mc.theWorld.getBlockId(x, y, z);
         int var6 = this.mc.theWorld.getBlockMetadata(x, y, z);
@@ -45,9 +45,11 @@ public class PlayerControllerSP extends PlayerController {
         if (var7 && var9) {
             Block.blocksList[id].harvestBlock(this.mc.theWorld, this.mc.thePlayer, x, y, z, var6);
         }
+
         if(TunnelESPHack.instance.status) TunnelESPHack.instance.forceCheckBlock(id, x, y, z);
         //XXX schematica
         Settings.instance().tryUpdating(x, y, z);
+        
         return var7;
     }
 
@@ -88,7 +90,6 @@ public class PlayerControllerSP extends PlayerController {
             	if(InstantHack.instance.status) {
                     this.sendBlockRemoved(var1, var2, var3, var4);
                 }
-                
                 this.curBlockDamage += block.blockStrength(this.mc.thePlayer);
                 if (this.field_1069_h % 4.0F == 0.0F && block != null) {
                     this.mc.sndManager.playSound(block.stepSound.func_1145_d(), (float)var1 + 0.5F, (float)var2 + 0.5F, (float)var3 + 0.5F, (block.stepSound.getVolume() + 1.0F) / 8.0F, block.stepSound.getPitch() * 0.5F);

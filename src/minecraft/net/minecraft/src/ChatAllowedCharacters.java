@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 
 public class ChatAllowedCharacters {
     public static final String allowedCharacters = getAllowedCharacters();
-    public static final char[] field_22286_b = new char[]{'/', '\n', '\r', '\t', '\u0000', '\f', '`', '?', '*', '\\', '<', '>', '|', '"', ':'};
+    public static final char[] allowedCharactersArray = new char[]{'/', '\n', '\r', '\t', '\u0000', '\f', '`', '?', '*', '\\', '<', '>', '|', '"', ':'};
 
     private static String getAllowedCharacters() {
         String var0 = "";

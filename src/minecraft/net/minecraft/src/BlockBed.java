@@ -177,7 +177,7 @@ public class BlockBed extends Block {
 
             for(int var12 = var8; var12 <= var10; ++var12) {
                 for(int var13 = var9; var13 <= var11; ++var13) {
-                    if (var0.func_28100_h(var12, var2 - 1, var13) && var0.isAirBlock(var12, var2, var13) && var0.isAirBlock(var12, var2 + 1, var13)) {
+                    if (var0.isBlockNormalCube(var12, var2 - 1, var13) && var0.isAirBlock(var12, var2, var13) && var0.isAirBlock(var12, var2 + 1, var13)) {
                         if (var4 <= 0) {
                             return new ChunkCoordinates(var12, var2, var13);
                         }
@@ -189,5 +189,16 @@ public class BlockBed extends Block {
         }
 
         return null;
+    }
+
+    public void dropBlockAsItemWithChance(World var1, int var2, int var3, int var4, int var5, float var6) {
+        if (!isBlockFootOfBed(var5)) {
+            super.dropBlockAsItemWithChance(var1, var2, var3, var4, var5, var6);
+        }
+
+    }
+
+    public int getMobilityFlag() {
+        return 1;
     }
 }

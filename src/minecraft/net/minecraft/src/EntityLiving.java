@@ -7,12 +7,11 @@ import net.skidcode.gh.maybeaclient.hacks.AntiSlowdownHack;
 import net.skidcode.gh.maybeaclient.hacks.AutoTunnelHack;
 import net.skidcode.gh.maybeaclient.hacks.ClimbGappedLadderHack;
 import net.skidcode.gh.maybeaclient.hacks.CombatLogHack;
-import net.skidcode.gh.maybeaclient.hacks.CustomHandPositionHack;
 import net.skidcode.gh.maybeaclient.hacks.FastLadderHack;
 import net.skidcode.gh.maybeaclient.hacks.StrafeHack;
 
 public abstract class EntityLiving extends Entity {
-    public int field_9366_o = 20;
+    public int heartsHalvesLife = 20;
     public float field_9365_p;
     public float field_9363_r;
     public float renderYawOffset = 0.0F;
@@ -157,14 +156,14 @@ public abstract class EntityLiving extends Entity {
             --this.hurtTime;
         }
 
-        if (this.field_9306_bj > 0) {
-            --this.field_9306_bj;
+        if (this.heartsLife > 0) {
+            --this.heartsLife;
         }
 
         if (this.health <= 0) {
             ++this.deathTime;
             if (this.deathTime > 20) {
-                this.unusedEntityMethod();
+                this.onEntityDeath();
                 this.setEntityDead();
 
                 for(var1 = 0; var1 < 20; ++var1) {
@@ -309,7 +308,7 @@ public abstract class EntityLiving extends Entity {
                 this.health = 20;
             }
 
-            this.field_9306_bj = this.field_9366_o / 2;
+            this.heartsLife = this.heartsHalvesLife / 2;
         }
     }
 
@@ -323,7 +322,7 @@ public abstract class EntityLiving extends Entity {
             } else {
                 this.field_704_R = 1.5F;
                 boolean var3 = true;
-                if ((float)this.field_9306_bj > (float)this.field_9366_o / 2.0F) {
+                if ((float)this.heartsLife > (float)this.heartsHalvesLife / 2.0F) {
                     if (var2 <= this.field_9346_af) {
                         return false;
                     }
@@ -334,7 +333,7 @@ public abstract class EntityLiving extends Entity {
                 } else {
                     this.field_9346_af = var2;
                     this.prevHealth = this.health;
-                    this.field_9306_bj = this.field_9366_o;
+                    this.heartsLife = this.heartsHalvesLife;
                     this.damageEntity(var2);
                     this.hurtTime = this.maxHurtTime = 10;
                 }
@@ -461,13 +460,13 @@ public abstract class EntityLiving extends Entity {
     }
 
     public void moveEntityWithHeading(float var1, float var2) {
-    	
+
     	float prevYaw = this.rotationYaw;
     	if(AutoTunnelHack.autoWalking()) {
     		this.rotationYaw = AutoTunnelHack.instance.getDirection().yaw;
     	}
     	
-        double var3;
+    	double var3;
         if(this == Client.mc.thePlayer) StrafeHack.inLiquid = false;
         if (this.isInWater()) {
         	if(this == Client.mc.thePlayer) StrafeHack.inLiquid = true;
@@ -511,7 +510,7 @@ public abstract class EntityLiving extends Entity {
                 var8 = 0.54600006F;
                 int var5 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
                 if (var5 > 0) {
-                	if(AntiSlowdownHack.instance.status) var8 = 0.6f * 0.91F;
+					if(AntiSlowdownHack.instance.status) var8 = 0.6f * 0.91F;
                 	else var8 = Block.blocksList[var5].slipperiness * 0.91F;
                 }
             }
@@ -578,8 +577,6 @@ public abstract class EntityLiving extends Entity {
 
         this.field_704_R += (var7 - this.field_704_R) * 0.4F;
         this.field_703_S += this.field_704_R;
-        
-        this.rotationYaw = prevYaw;
     }
 
     public boolean isOnLadder() {
@@ -814,7 +811,7 @@ public abstract class EntityLiving extends Entity {
         return var1 + var4;
     }
 
-    public void unusedEntityMethod() {
+    public void onEntityDeath() {
     }
 
     public boolean getCanSpawnHere() {
@@ -830,7 +827,7 @@ public abstract class EntityLiving extends Entity {
         if (var2 < 0.0F) {
             ++var2;
         }
-        
+
         return this.prevSwingProgress + var2 * var1;
     }
 
@@ -889,7 +886,7 @@ public abstract class EntityLiving extends Entity {
     public void handleHealthUpdate(byte var1) {
         if (var1 == 2) {
             this.field_704_R = 1.5F;
-            this.field_9306_bj = this.field_9366_o;
+            this.heartsLife = this.heartsHalvesLife;
             this.hurtTime = this.maxHurtTime = 10;
             this.attackedAtYaw = 0.0F;
             this.worldObj.playSoundAtEntity(this, this.getHurtSound(), this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);

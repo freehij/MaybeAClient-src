@@ -5,13 +5,13 @@ import org.lwjgl.input.Keyboard;
 
 public class StatStringFormatKeyInv implements IStatStringFormat {
     // $FF: synthetic field
-    final Minecraft field_27344_a;
+    final Minecraft mc;
 
     public StatStringFormatKeyInv(Minecraft var1) {
-        this.field_27344_a = var1;
+        this.mc = var1;
     }
 
     public String formatString(String var1) {
-        return String.format(var1, Keyboard.getKeyName(this.field_27344_a.gameSettings.keyBindInventory.keyCode));
+        return String.format(var1, Keyboard.getKeyName(this.mc.gameSettings.keyBindInventory.keyCode));
     }
 }

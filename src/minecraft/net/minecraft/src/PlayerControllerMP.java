@@ -44,6 +44,7 @@ public class PlayerControllerMP extends PlayerController {
             }
         }
 
+        
         if(TunnelESPHack.instance.status) TunnelESPHack.instance.forceCheckBlock(id, x, y, z);
         //XXX schematica
         Settings.instance().tryUpdating(x, y, z);
@@ -86,7 +87,6 @@ public class PlayerControllerMP extends PlayerController {
 
     public void sendBlockRemoving(int var1, int var2, int var3, int var4) {
         if (this.isHittingBlock) {
-        	
         	if(InstantHack.instance.status) {
 	            this.netClientHandler.addToSendQueue(new Packet14BlockDig(0, var1, var2, var3, var4)); //new Packet16BlockItemSwitch(this.field_1075_l));
 	            this.netClientHandler.addToSendQueue(new Packet14BlockDig(2, var1, var2, var3, var4));
@@ -137,7 +137,7 @@ public class PlayerControllerMP extends PlayerController {
         if (this.curBlockDamageMP <= 0.0F) {
             this.mc.ingameGUI.damageGuiPartialTime = 0.0F;
             this.mc.renderGlobal.damagePartialTime = 0.0F;
-        } else {//CLIENT: visuals
+        } else {
         	float div = SpeedMineHack.instance.status ? SpeedMineHack.instance.sendDestroyAfter.value : 1.0f;
             float var2 = this.prevBlockDamageMP + (this.curBlockDamageMP - this.prevBlockDamageMP) * var1;
             this.mc.ingameGUI.damageGuiPartialTime = var2/div;
@@ -173,14 +173,16 @@ public class PlayerControllerMP extends PlayerController {
     public boolean isBeingUsed() {
     	return this.isHittingBlock; //no need to check others
     }
-    
+
     public boolean sendPlaceBlock(EntityPlayer var1, World var2, ItemStack var3, int var4, int var5, int var6, int var7) {
         this.syncCurrentPlayItem();
         this.netClientHandler.addToSendQueue(new Packet15Place(var4, var5, var6, var7, var1.inventory.getCurrentItem()));
         boolean var8 = super.sendPlaceBlock(var1, var2, var3, var4, var5, var6, var7);
+        
         if(TunnelESPHack.instance.status) TunnelESPHack.instance.forceCheckBlock(0, var4, var5, var6);
         //XXX schematica
         Settings.instance().tryUpdating(var4, var5, var6);
+        
         return var8;
     }
 

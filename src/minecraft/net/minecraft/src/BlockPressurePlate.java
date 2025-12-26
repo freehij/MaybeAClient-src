@@ -31,7 +31,7 @@ public class BlockPressurePlate extends Block {
     }
 
     public boolean canPlaceBlockAt(World var1, int var2, int var3, int var4) {
-        return var1.func_28100_h(var2, var3 - 1, var4);
+        return var1.isBlockNormalCube(var2, var3 - 1, var4);
     }
 
     public void onBlockAdded(World var1, int var2, int var3, int var4) {
@@ -39,7 +39,7 @@ public class BlockPressurePlate extends Block {
 
     public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {
         boolean var6 = false;
-        if (!var1.func_28100_h(var2, var3 - 1, var4)) {
+        if (!var1.isBlockNormalCube(var2, var3 - 1, var4)) {
             var6 = true;
         }
 
@@ -151,5 +151,9 @@ public class BlockPressurePlate extends Block {
         float var2 = 0.125F;
         float var3 = 0.5F;
         this.setBlockBounds(0.5F - var1, 0.5F - var2, 0.5F - var3, 0.5F + var1, 0.5F + var2, 0.5F + var3);
+    }
+
+    public int getMobilityFlag() {
+        return 1;
     }
 }

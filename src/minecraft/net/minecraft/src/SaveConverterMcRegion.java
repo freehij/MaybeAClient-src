@@ -131,7 +131,7 @@ public class SaveConverterMcRegion extends SaveFormatOld {
             if (!var11.func_22202_c(var9 & 31, var10 & 31)) {
                 try {
                     DataInputStream var12 = new DataInputStream(new GZIPInputStream(new FileInputStream(var8.func_22324_a())));
-                    DataOutputStream var13 = var11.func_22205_b(var9 & 31, var10 & 31);
+                    DataOutputStream var13 = var11.getChunkDataOutputStream(var9 & 31, var10 & 31);
                     boolean var14 = false;
 
                     int var17;

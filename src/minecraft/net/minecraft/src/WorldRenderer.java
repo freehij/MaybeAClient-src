@@ -57,14 +57,13 @@ public class WorldRenderer {
         this.needsUpdate = false;
     }
     public ArrayList<ChunkPos> chunksOccupied = new ArrayList<>();
-    
+
     public void setPosition(int var1, int var2, int var3) {
         if (var1 != this.posX || var2 != this.posY || var3 != this.posZ) {
             this.setDontDraw();
             this.posX = var1;
             this.posY = var2;
             this.posZ = var3;
-            
             chunksOccupied.clear();
             for(int x = this.posX >> 4; x < (this.posX+this.sizeWidth) >> 4; x += 1) {
             	for(int z = this.posZ >> 4; z < (this.posZ+this.sizeDepth) >> 4; z += 1) {
@@ -145,7 +144,7 @@ public class WorldRenderer {
                                     tessellator.startDrawingQuads();
                                     tessellator.setTranslationD((double)(-this.posX), (double)(-this.posY), (double)(-this.posZ));
                                 }
-
+                                
                                 if(BlockESPHack.instance.status && var11 == 0) {
         							if(BlockESPHack.instance.blocks.blocks[id]) {
         								BlockPos pos = new BlockPos(x, y, z);
@@ -158,7 +157,7 @@ public class WorldRenderer {
                                 if(TunnelESPHack.instance.status && var11 == 0) {
         							TunnelESPHack.instance.checkBlock(id, x, y, z);
         						}
-                                
+
                                 if (var11 == 0 && Block.isBlockContainer[id]) {
                                     TileEntity var23 = var9.getBlockTileEntity(x, y, z);
                                     if (TileEntityRenderer.instance.hasSpecialRenderer(var23)) {
@@ -195,7 +194,7 @@ public class WorldRenderer {
                     break;
                 }
             }
-            XRayHack.applyOpacity = false;
+
             HashSet var22 = new HashSet();
             var22.addAll(this.tileEntityRenderers);
             var22.removeAll(var21);

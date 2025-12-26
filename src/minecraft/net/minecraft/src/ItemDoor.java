@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
 public class ItemDoor extends Item {
-    private Material material;
+    private Material doorMaterial;
 
     public ItemDoor(int var1, Material var2) {
         super(var1);
-        this.material = var2;
+        this.doorMaterial = var2;
         this.maxStackSize = 1;
     }
 
@@ -15,7 +15,7 @@ public class ItemDoor extends Item {
         } else {
             ++var5;
             Block var8;
-            if (this.material == Material.wood) {
+            if (this.doorMaterial == Material.wood) {
                 var8 = Block.doorWood;
             } else {
                 var8 = Block.doorSteel;
@@ -43,8 +43,8 @@ public class ItemDoor extends Item {
                     var10 = 1;
                 }
 
-                int var12 = (var3.func_28100_h(var4 - var10, var5, var6 - var11) ? 1 : 0) + (var3.func_28100_h(var4 - var10, var5 + 1, var6 - var11) ? 1 : 0);
-                int var13 = (var3.func_28100_h(var4 + var10, var5, var6 + var11) ? 1 : 0) + (var3.func_28100_h(var4 + var10, var5 + 1, var6 + var11) ? 1 : 0);
+                int var12 = (var3.isBlockNormalCube(var4 - var10, var5, var6 - var11) ? 1 : 0) + (var3.isBlockNormalCube(var4 - var10, var5 + 1, var6 - var11) ? 1 : 0);
+                int var13 = (var3.isBlockNormalCube(var4 + var10, var5, var6 + var11) ? 1 : 0) + (var3.isBlockNormalCube(var4 + var10, var5 + 1, var6 + var11) ? 1 : 0);
                 boolean var14 = var3.getBlockId(var4 - var10, var5, var6 - var11) == var8.blockID || var3.getBlockId(var4 - var10, var5 + 1, var6 - var11) == var8.blockID;
                 boolean var15 = var3.getBlockId(var4 + var10, var5, var6 + var11) == var8.blockID || var3.getBlockId(var4 + var10, var5 + 1, var6 + var11) == var8.blockID;
                 boolean var16 = false;

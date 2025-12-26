@@ -272,37 +272,39 @@ class RailLogic {
                 var7 = 1;
             }
 
-            if (var1) {
-                if (var4 && var6) {
-                    var7 = 6;
-                }
+            if (!this.isPoweredRail) {
+                if (var1) {
+                    if (var4 && var6) {
+                        var7 = 6;
+                    }
 
-                if (var5 && var4) {
-                    var7 = 7;
-                }
+                    if (var5 && var4) {
+                        var7 = 7;
+                    }
 
-                if (var6 && var3) {
-                    var7 = 9;
-                }
+                    if (var6 && var3) {
+                        var7 = 9;
+                    }
 
-                if (var3 && var5) {
-                    var7 = 8;
-                }
-            } else {
-                if (var3 && var5) {
-                    var7 = 8;
-                }
+                    if (var3 && var5) {
+                        var7 = 8;
+                    }
+                } else {
+                    if (var3 && var5) {
+                        var7 = 8;
+                    }
 
-                if (var6 && var3) {
-                    var7 = 9;
-                }
+                    if (var6 && var3) {
+                        var7 = 9;
+                    }
 
-                if (var5 && var4) {
-                    var7 = 7;
-                }
+                    if (var5 && var4) {
+                        var7 = 7;
+                    }
 
-                if (var4 && var6) {
-                    var7 = 6;
+                    if (var4 && var6) {
+                        var7 = 6;
+                    }
                 }
             }
         }

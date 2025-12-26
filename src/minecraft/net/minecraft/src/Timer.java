@@ -23,6 +23,7 @@ public class Timer {
 
     public void updateTimer() {
     	
+    	
     	if(ClockspeedHack.instance.status) {
     		this.timerSpeed = ClockspeedHack.instance.speed.value;
     	}else {

@@ -118,12 +118,14 @@ public class RenderManager {
     }
 
     public void renderEntityWithPosYaw(Entity var1, double var2, double var4, double var6, float var8, float var9) {
+    	
     	Client.class.getClass(); //render engine null check
     	if(this.renderEngine == null) return;
     	if(var1 instanceof EntityItem && NoRenderHack.instance.status && NoRenderHack.instance.itemEntities.value) return;
     	if(var1 instanceof EntityPlayer && var1 != Client.mc.thePlayer && NoRenderHack.instance.status && NoRenderHack.instance.players.value) return;
     	
-    	Render var10 = this.getEntityRenderObject(var1);
+    	
+        Render var10 = this.getEntityRenderObject(var1);
         if (var10 != null) {
             var10.doRender(var1, var2, var4, var6, var8, var9);
             var10.doRenderShadowAndFire(var1, var2, var4, var6, var8, var9);

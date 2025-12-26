@@ -12,7 +12,7 @@ public class EntityArrow extends Entity {
     private int inTile = 0;
     private int field_28019_h = 0;
     private boolean inGround = false;
-    public boolean field_28020_a = false;
+    public boolean doesArrowBelongToPlayer = false;
     public int arrowShake = 0;
     public EntityLiving owner;
     private int ticksInGround;
@@ -41,7 +41,7 @@ public class EntityArrow extends Entity {
         	--Entity.nextEntityID;
         }
         this.owner = var2;
-        this.field_28020_a = var2 instanceof EntityPlayer;
+        this.doesArrowBelongToPlayer = var2 instanceof EntityPlayer;
         this.setSize(0.5F, 0.5F);
         this.setLocationAndAngles(var2.posX, var2.posY + (double)var2.getEyeHeight(), var2.posZ, var2.rotationYaw, var2.rotationPitch);
         if(this.spawnedByTrajectories) {
@@ -69,9 +69,9 @@ public class EntityArrow extends Entity {
         if(this.spawnedByTrajectories) {
         	
         }else {
-	        x += this.rand.nextGaussian() * 0.007499999832361937D * (double)var8;
-	        y += this.rand.nextGaussian() * 0.007499999832361937D * (double)var8;
-	        z += this.rand.nextGaussian() * 0.007499999832361937D * (double)var8;
+        	x += this.rand.nextGaussian() * 0.007499999832361937D * (double)var8;
+            y += this.rand.nextGaussian() * 0.007499999832361937D * (double)var8;
+            z += this.rand.nextGaussian() * 0.007499999832361937D * (double)var8;
         }
         x *= (double)var7;
         y *= (double)var7;
@@ -129,7 +129,6 @@ public class EntityArrow extends Entity {
             int var18 = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
             if (var15 == this.inTile && var18 == this.field_28019_h) {
                 ++this.ticksInGround;
-                
                 if(this.spawnedByTrajectories) {
                 	this.setEntityDead();
                 }
@@ -256,7 +255,6 @@ public class EntityArrow extends Entity {
                         this.worldObj.spawnParticle("bubble", this.posX - this.motionX * (double)var22, this.posY - this.motionY * (double)var22, this.posZ - this.motionZ * (double)var22, this.motionX, this.motionY, this.motionZ);
                     }
             	}
-                
 
                 var20 = 0.8F;
             }
@@ -285,7 +283,7 @@ public class EntityArrow extends Entity {
         var1.setByte("inData", (byte)this.field_28019_h);
         var1.setByte("shake", (byte)this.arrowShake);
         var1.setByte("inGround", (byte)(this.inGround ? 1 : 0));
-        var1.setBoolean("player", this.field_28020_a);
+        var1.setBoolean("player", this.doesArrowBelongToPlayer);
     }
 
     public void readEntityFromNBT(NBTTagCompound var1) {
@@ -296,12 +294,12 @@ public class EntityArrow extends Entity {
         this.field_28019_h = var1.getByte("inData") & 255;
         this.arrowShake = var1.getByte("shake") & 255;
         this.inGround = var1.getByte("inGround") == 1;
-        this.field_28020_a = var1.getBoolean("player");
+        this.doesArrowBelongToPlayer = var1.getBoolean("player");
     }
 
     public void onCollideWithPlayer(EntityPlayer var1) {
         if (!this.worldObj.multiplayerWorld) {
-            if (this.inGround && this.field_28020_a && this.arrowShake <= 0 && var1.inventory.addItemStackToInventory(new ItemStack(Item.arrow, 1))) {
+            if (this.inGround && this.doesArrowBelongToPlayer && this.arrowShake <= 0 && var1.inventory.addItemStackToInventory(new ItemStack(Item.arrow, 1))) {
                 this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 var1.onItemPickup(this, 1);
                 this.setEntityDead();

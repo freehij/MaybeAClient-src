@@ -18,11 +18,11 @@ public class BlockRedstoneRepeater extends Block {
     }
 
     public boolean canPlaceBlockAt(World var1, int var2, int var3, int var4) {
-        return !var1.func_28100_h(var2, var3 - 1, var4) ? false : super.canPlaceBlockAt(var1, var2, var3, var4);
+        return !var1.isBlockNormalCube(var2, var3 - 1, var4) ? false : super.canPlaceBlockAt(var1, var2, var3, var4);
     }
 
     public boolean canBlockStay(World var1, int var2, int var3, int var4) {
-        return !var1.func_28100_h(var2, var3 - 1, var4) ? false : super.canBlockStay(var1, var2, var3, var4);
+        return !var1.isBlockNormalCube(var2, var3 - 1, var4) ? false : super.canBlockStay(var1, var2, var3, var4);
     }
 
     public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
@@ -104,13 +104,13 @@ public class BlockRedstoneRepeater extends Block {
         int var6 = var5 & 3;
         switch(var6) {
         case 0:
-            return var1.isBlockIndirectlyProvidingPowerTo(var2, var3, var4 + 1, 3);
+            return var1.isBlockIndirectlyProvidingPowerTo(var2, var3, var4 + 1, 3) || var1.getBlockId(var2, var3, var4 + 1) == Block.redstoneWire.blockID && var1.getBlockMetadata(var2, var3, var4 + 1) > 0;
         case 1:
-            return var1.isBlockIndirectlyProvidingPowerTo(var2 - 1, var3, var4, 4);
+            return var1.isBlockIndirectlyProvidingPowerTo(var2 - 1, var3, var4, 4) || var1.getBlockId(var2 - 1, var3, var4) == Block.redstoneWire.blockID && var1.getBlockMetadata(var2 - 1, var3, var4) > 0;
         case 2:
-            return var1.isBlockIndirectlyProvidingPowerTo(var2, var3, var4 - 1, 2);
+            return var1.isBlockIndirectlyProvidingPowerTo(var2, var3, var4 - 1, 2) || var1.getBlockId(var2, var3, var4 - 1) == Block.redstoneWire.blockID && var1.getBlockMetadata(var2, var3, var4 - 1) > 0;
         case 3:
-            return var1.isBlockIndirectlyProvidingPowerTo(var2 + 1, var3, var4, 5);
+            return var1.isBlockIndirectlyProvidingPowerTo(var2 + 1, var3, var4, 5) || var1.getBlockId(var2 + 1, var3, var4) == Block.redstoneWire.blockID && var1.getBlockMetadata(var2 + 1, var3, var4) > 0;
         default:
             return false;
         }

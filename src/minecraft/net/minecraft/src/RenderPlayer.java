@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
-import net.skidcode.gh.maybeaclient.Client;
 import net.skidcode.gh.maybeaclient.hacks.EntityESPHack;
 import net.skidcode.gh.maybeaclient.hacks.NameTagsHack;
 import net.skidcode.gh.maybeaclient.hacks.settings.SettingColor;
@@ -45,7 +44,7 @@ public class RenderPlayer extends RenderLiving {
         return false;
     }
 
-    public void func_188_a(EntityPlayer var1, double var2, double var4, double var6, float var8, float var9) {
+    public void renderPlayer(EntityPlayer var1, double var2, double var4, double var6, float var8, float var9) {
         ItemStack var10 = var1.inventory.getCurrentItem();
         this.modelArmorChestplate.field_1278_i = this.modelArmor.field_1278_i = this.modelBipedMain.field_1278_i = var10 != null;
         this.modelArmorChestplate.isSneak = this.modelArmor.isSneak = this.modelBipedMain.isSneak = var1.isSneaking();
@@ -330,12 +329,12 @@ public class RenderPlayer extends RenderLiving {
     // $FF: synthetic method
     // $FF: bridge method
     public void doRenderLiving(EntityLiving var1, double var2, double var4, double var6, float var8, float var9) {
-        this.func_188_a((EntityPlayer)var1, var2, var4, var6, var8, var9);
+        this.renderPlayer((EntityPlayer)var1, var2, var4, var6, var8, var9);
     }
 
     // $FF: synthetic method
     // $FF: bridge method
     public void doRender(Entity var1, double var2, double var4, double var6, float var8, float var9) {
-        this.func_188_a((EntityPlayer)var1, var2, var4, var6, var8, var9);
+        this.renderPlayer((EntityPlayer)var1, var2, var4, var6, var8, var9);
     }
 }

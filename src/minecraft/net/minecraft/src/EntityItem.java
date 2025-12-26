@@ -50,7 +50,7 @@ public class EntityItem extends Entity {
             this.worldObj.playSoundAtEntity(this, "random.fizz", 0.4F, 2.0F + this.rand.nextFloat() * 0.4F);
         }
 
-        this.func_28014_c(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
+        this.pushOutOfBlocks(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
         float var1 = 0.98F;
         if (this.onGround) {

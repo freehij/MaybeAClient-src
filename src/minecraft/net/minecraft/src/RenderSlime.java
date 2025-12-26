@@ -27,7 +27,7 @@ public class RenderSlime extends RenderLiving {
         }
     }
 
-    protected void func_178_a(EntitySlime var1, float var2) {
+    protected void scaleSlime(EntitySlime var1, float var2) {
         int var3 = var1.getSlimeSize();
         float var4 = (var1.field_767_b + (var1.field_768_a - var1.field_767_b) * var2) / ((float)var3 * 0.5F + 1.0F);
         float var5 = 1.0F / (var4 + 1.0F);
@@ -38,7 +38,7 @@ public class RenderSlime extends RenderLiving {
     // $FF: synthetic method
     // $FF: bridge method
     protected void preRenderCallback(EntityLiving var1, float var2) {
-        this.func_178_a((EntitySlime)var1, var2);
+        this.scaleSlime((EntitySlime)var1, var2);
     }
 
     // $FF: synthetic method

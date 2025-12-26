@@ -121,6 +121,7 @@ public class BlockFurnace extends BlockContainer {
 
         keepFurnaceInventory = false;
         var1.setBlockMetadataWithNotify(var2, var3, var4, var5);
+        var6.func_31004_j();
         var1.setBlockTileEntity(var2, var3, var4, var6);
     }
 

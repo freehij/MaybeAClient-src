@@ -108,6 +108,7 @@ public class Item {
     public static Item redstoneRepeater;
     public static Item cookie;
     public static ItemMap mapItem;
+    public static ItemShears shears;
     public static Item record13;
     public static Item recordCat;
     public final int shiftedIndex;
@@ -373,6 +374,7 @@ public class Item {
         redstoneRepeater = (new ItemReed(100, Block.redstoneRepeaterIdle)).setIconCoord(6, 5).setItemName("diode");
         cookie = (new ItemCookie(101, 1, false, 8)).setIconCoord(12, 5).setItemName("cookie");
         mapItem = (ItemMap)(new ItemMap(102)).setIconCoord(12, 3).setItemName("map");
+        shears = (ItemShears)(new ItemShears(103)).setIconCoord(13, 5).setItemName("shears");
         record13 = (new ItemRecord(2000, "13")).setIconCoord(0, 15).setItemName("record");
         recordCat = (new ItemRecord(2001, "cat")).setIconCoord(1, 15).setItemName("record");
         StatList.func_25151_b();

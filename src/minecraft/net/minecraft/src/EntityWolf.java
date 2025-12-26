@@ -235,7 +235,7 @@ public class EntityWolf extends EntityAnimal {
 
             for(int var7 = 0; var7 <= 4; ++var7) {
                 for(int var8 = 0; var8 <= 4; ++var8) {
-                    if ((var7 < 1 || var8 < 1 || var7 > 3 || var8 > 3) && this.worldObj.func_28100_h(var4 + var7, var6 - 1, var5 + var8) && !this.worldObj.func_28100_h(var4 + var7, var6, var5 + var8) && !this.worldObj.func_28100_h(var4 + var7, var6 + 1, var5 + var8)) {
+                    if ((var7 < 1 || var8 < 1 || var7 > 3 || var8 > 3) && this.worldObj.isBlockNormalCube(var4 + var7, var6 - 1, var5 + var8) && !this.worldObj.isBlockNormalCube(var4 + var7, var6, var5 + var8) && !this.worldObj.isBlockNormalCube(var4 + var7, var6 + 1, var5 + var8)) {
                         this.setLocationAndAngles((double)((float)(var4 + var7) + 0.5F), (double)var6, (double)((float)(var5 + var8) + 0.5F), this.rotationYaw, this.rotationPitch);
                         return;
                     }

@@ -60,13 +60,14 @@ public abstract class Entity {
     public int fire;
     protected int maxAir;
     protected boolean inWater;
-    public int field_9306_bj;
+    public int heartsLife;
     public int air;
     private boolean isFirstUpdate;
     public String skinUrl;
     public String cloakUrl;
     protected boolean isImmuneToFire;
     protected DataWatcher dataWatcher;
+    public float entityBrightness;
     private double entityRiderPitchDelta;
     private double entityRiderYawDelta;
     public boolean addedToChunk;
@@ -77,10 +78,8 @@ public abstract class Entity {
     public int serverPosY;
     public int serverPosZ;
     public boolean ignoreFrustumCheck;
+	public int ff_delay = 0;
 
-    
-    public int ff_delay = 0;
-    
     public Entity(World var1) {
         this.entityId = nextEntityID++;
         this.renderDistanceWeight = 1.0D;
@@ -108,11 +107,12 @@ public abstract class Entity {
         this.fire = 0;
         this.maxAir = 300;
         this.inWater = false;
-        this.field_9306_bj = 0;
+        this.heartsLife = 0;
         this.air = 300;
         this.isFirstUpdate = true;
         this.isImmuneToFire = false;
         this.dataWatcher = new DataWatcher();
+        this.entityBrightness = 0.0F;
         this.addedToChunk = false;
         this.worldObj = var1;
         this.setPosition(0.0D, 0.0D, 0.0D);
@@ -178,6 +178,7 @@ public abstract class Entity {
     }
 
     public void func_346_d(float var1, float var2) {
+    	
     	if(CameraLockHack.instance.status) {
     		
     		CameraLockHack.LockMode yawlock = CameraLockHack.instance.lockYaw();
@@ -214,9 +215,6 @@ public abstract class Entity {
     }
 
     public void onEntityUpdate() {
-    	boolean interact = true;
-    	if(this instanceof EntityArrow && ((EntityArrow) this).spawnedByTrajectories) interact = false;
-    	
         if (this.ridingEntity != null && this.ridingEntity.isDead) {
             this.ridingEntity = null;
         }
@@ -235,24 +233,22 @@ public abstract class Entity {
                     var1 = 1.0F;
                 }
 
-                if(interact) this.worldObj.playSoundAtEntity(this, "random.splash", var1, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
+                this.worldObj.playSoundAtEntity(this, "random.splash", var1, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
                 float var2 = (float)MathHelper.floor_double(this.boundingBox.minY);
 
                 int var3;
                 float var4;
                 float var5;
-                if(interact) {
-	                for(var3 = 0; (float)var3 < 1.0F + this.width * 20.0F; ++var3) {
-	                    var4 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
-	                    var5 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
-	                    this.worldObj.spawnParticle("bubble", this.posX + (double)var4, (double)(var2 + 1.0F), this.posZ + (double)var5, this.motionX, this.motionY - (double)(this.rand.nextFloat() * 0.2F), this.motionZ);
-	                }
-	
-	                for(var3 = 0; (float)var3 < 1.0F + this.width * 20.0F; ++var3) {
-	                    var4 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
-	                    var5 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
-	                    this.worldObj.spawnParticle("splash", this.posX + (double)var4, (double)(var2 + 1.0F), this.posZ + (double)var5, this.motionX, this.motionY, this.motionZ);
-	                }
+                for(var3 = 0; (float)var3 < 1.0F + this.width * 20.0F; ++var3) {
+                    var4 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
+                    var5 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
+                    this.worldObj.spawnParticle("bubble", this.posX + (double)var4, (double)(var2 + 1.0F), this.posZ + (double)var5, this.motionX, this.motionY - (double)(this.rand.nextFloat() * 0.2F), this.motionZ);
+                }
+
+                for(var3 = 0; (float)var3 < 1.0F + this.width * 20.0F; ++var3) {
+                    var4 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
+                    var5 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
+                    this.worldObj.spawnParticle("splash", this.posX + (double)var4, (double)(var2 + 1.0F), this.posZ + (double)var5, this.motionX, this.motionY, this.motionZ);
                 }
             }
 
@@ -319,7 +315,7 @@ public abstract class Entity {
     }
 
     public void moveEntity(double var1, double var3, double var5) {
-        if (this.noClip || (FreecamHack.instance.status && FreecamHack.instance.noclip.value && this == Client.mc.thePlayer) || (NoClipHack.instance.status && this == Client.mc.thePlayer)) {
+    	if (this.noClip || (FreecamHack.instance.status && FreecamHack.instance.noclip.value && this == Client.mc.thePlayer) || (NoClipHack.instance.status && this == Client.mc.thePlayer)) {
             this.boundingBox.offset(var1, var3, var5);
             this.posX = (this.boundingBox.minX + this.boundingBox.maxX) / 2.0D;
             this.posY = this.boundingBox.minY + (double)this.yOffset - (double)this.ySize;
@@ -342,7 +338,7 @@ public abstract class Entity {
             double var13 = var3;
             double var15 = var5;
             AxisAlignedBB var17 = this.boundingBox.copy();
-            boolean var18 = this.onGround && (this.isSneaking() || SafeWalkHack.instance.status);;
+            boolean var18 = this.onGround && (this.isSneaking() || SafeWalkHack.instance.status);
             if (var18) {
             	BlockFluid.forceNullBB = true;
                 double var19;
@@ -367,6 +363,7 @@ public abstract class Entity {
                 }
                 BlockFluid.forceNullBB = false;
             }
+
             if(this != Client.mc.thePlayer) BlockFluid.forceNullBB = true;
             List var35 = this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.addCoord(var1, var3, var5));
 
@@ -561,7 +558,7 @@ public abstract class Entity {
                 this.fire = -this.fireResistance;
             }
             BlockFluid.forceNullBB = false;
-            
+
             if (var42 && this.fire > 0) {
                 this.worldObj.playSoundAtEntity(this, "random.fizz", 0.7F, 1.6F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
                 this.fire = -this.fireResistance;
@@ -661,7 +658,16 @@ public abstract class Entity {
         double var3 = (this.boundingBox.maxY - this.boundingBox.minY) * 0.66D;
         int var5 = MathHelper.floor_double(this.posY - (double)this.yOffset + var3);
         int var6 = MathHelper.floor_double(this.posZ);
-        return this.worldObj.checkChunksExist(MathHelper.floor_double(this.boundingBox.minX), MathHelper.floor_double(this.boundingBox.minY), MathHelper.floor_double(this.boundingBox.minZ), MathHelper.floor_double(this.boundingBox.maxX), MathHelper.floor_double(this.boundingBox.maxY), MathHelper.floor_double(this.boundingBox.maxZ)) ? this.worldObj.getLightBrightness(var2, var5, var6) : 0.0F;
+        if (this.worldObj.checkChunksExist(MathHelper.floor_double(this.boundingBox.minX), MathHelper.floor_double(this.boundingBox.minY), MathHelper.floor_double(this.boundingBox.minZ), MathHelper.floor_double(this.boundingBox.maxX), MathHelper.floor_double(this.boundingBox.maxY), MathHelper.floor_double(this.boundingBox.maxZ))) {
+            float var7 = this.worldObj.getLightBrightness(var2, var5, var6);
+            if (var7 < this.entityBrightness) {
+                var7 = this.entityBrightness;
+            }
+
+            return var7;
+        } else {
+            return this.entityBrightness;
+        }
     }
 
     public void setWorld(World var1) {
@@ -920,7 +926,7 @@ public abstract class Entity {
             int var5 = MathHelper.floor_double(this.posX + (double)var2);
             int var6 = MathHelper.floor_double(this.posY + (double)this.getEyeHeight() + (double)var3);
             int var7 = MathHelper.floor_double(this.posZ + (double)var4);
-            if (this.worldObj.func_28100_h(var5, var6, var7)) {
+            if (this.worldObj.isBlockNormalCube(var5, var6, var7)) {
                 return true;
             }
         }
@@ -1117,20 +1123,20 @@ public abstract class Entity {
     public void onKillEntity(EntityLiving var1) {
     }
 
-    protected boolean func_28014_c(double var1, double var3, double var5) {
+    protected boolean pushOutOfBlocks(double var1, double var3, double var5) {
         int var7 = MathHelper.floor_double(var1);
         int var8 = MathHelper.floor_double(var3);
         int var9 = MathHelper.floor_double(var5);
         double var10 = var1 - (double)var7;
         double var12 = var3 - (double)var8;
         double var14 = var5 - (double)var9;
-        if (this.worldObj.func_28100_h(var7, var8, var9)) {
-            boolean var16 = !this.worldObj.func_28100_h(var7 - 1, var8, var9);
-            boolean var17 = !this.worldObj.func_28100_h(var7 + 1, var8, var9);
-            boolean var18 = !this.worldObj.func_28100_h(var7, var8 - 1, var9);
-            boolean var19 = !this.worldObj.func_28100_h(var7, var8 + 1, var9);
-            boolean var20 = !this.worldObj.func_28100_h(var7, var8, var9 - 1);
-            boolean var21 = !this.worldObj.func_28100_h(var7, var8, var9 + 1);
+        if (this.worldObj.isBlockNormalCube(var7, var8, var9)) {
+            boolean var16 = !this.worldObj.isBlockNormalCube(var7 - 1, var8, var9);
+            boolean var17 = !this.worldObj.isBlockNormalCube(var7 + 1, var8, var9);
+            boolean var18 = !this.worldObj.isBlockNormalCube(var7, var8 - 1, var9);
+            boolean var19 = !this.worldObj.isBlockNormalCube(var7, var8 + 1, var9);
+            boolean var20 = !this.worldObj.isBlockNormalCube(var7, var8, var9 - 1);
+            boolean var21 = !this.worldObj.isBlockNormalCube(var7, var8, var9 + 1);
             byte var22 = -1;
             double var23 = 9999.0D;
             if (var16 && var10 < var23) {

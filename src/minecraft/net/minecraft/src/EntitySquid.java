@@ -136,5 +136,6 @@ public class EntitySquid extends EntityWaterMob {
             this.randomMotionVecZ = MathHelper.sin(var1) * 0.2F;
         }
 
+        this.func_27021_X();
     }
 }

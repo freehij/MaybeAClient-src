@@ -12,7 +12,6 @@ public class TextureLavaFX extends TextureFX {
         super(Block.lavaMoving.blockIndexInTexture);
     }
 
-    public boolean hasTexture = false;
     public void onTick() {
     	if(this.hasTexture && NoRenderHack.instance.status && NoRenderHack.instance.lavaAnim.value) {
         	return;
@@ -84,6 +83,7 @@ public class TextureLavaFX extends TextureFX {
             this.imageData[var2 * 4 + 2] = (byte)var7;
             this.imageData[var2 * 4 + 3] = -1;
         }
-        hasTexture = true;
+        this.hasTexture = true;
     }
+    public boolean hasTexture = false;
 }

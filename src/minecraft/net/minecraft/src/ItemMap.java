@@ -3,6 +3,9 @@ package net.minecraft.src;
 import net.skidcode.gh.maybeaclient.Client;
 
 public class ItemMap extends ItemMapBase {
+	static {
+		Client.class.getClass(); //map scale
+	}
     public static int scale = 3;
 
 	protected ItemMap(int var1) {
@@ -38,177 +41,176 @@ public class ItemMap extends ItemMapBase {
             var2.setItemData(var3, var4);
         }
         var4.field_28177_e = (byte) ItemMap.scale;
-        
+
         return var4;
     }
 
-    public void func_28011_a(World world, Entity entity, MapData var3) {
-        if (world.worldProvider.worldType == var3.field_28178_d) {
-            short xSize = 128;
-            short zSize = 128;
-            int scale = 1 << var3.field_28177_e;
-            int xCenter = var3.field_28180_b;
-            int zCenter = var3.field_28179_c;
-            int xStart = MathHelper.floor_double(entity.posX - (double)xCenter) / scale + xSize / 2;
-            int zStart = MathHelper.floor_double(entity.posZ - (double)zCenter) / scale + zSize / 2;
-            int var11 = 128 / scale;
-            if (world.worldProvider.field_6478_e) {
+    public void func_28011_a(World var1, Entity var2, MapData var3) {
+        if (var1.worldProvider.worldType == var3.field_28178_d) {
+            short var4 = 128;
+            short var5 = 128;
+            int var6 = 1 << var3.field_28177_e;
+            int var7 = var3.field_28180_b;
+            int var8 = var3.field_28179_c;
+            int var9 = MathHelper.floor_double(var2.posX - (double)var7) / var6 + var4 / 2;
+            int var10 = MathHelper.floor_double(var2.posZ - (double)var8) / var6 + var5 / 2;
+            int var11 = 128 / var6;
+            if (var1.worldProvider.hasNoSky) {
                 var11 /= 2;
             }
 
             ++var3.field_28175_g;
-            for(int x = xStart - var11 + 1; x < xStart + var11; ++x) {
-                if ((x & 15) == (var3.field_28175_g & 15)) {
+
+            for(int var12 = var9 - var11 + 1; var12 < var9 + var11; ++var12) {
+                if ((var12 & 15) == (var3.field_28175_g & 15)) {
                     int var13 = 255;
                     int var14 = 0;
-                    double prevAvgHeightValue = 0.0D;
+                    double var15 = 0.0D;
 
-                    for(int z = zStart - var11 - 1; z < zStart + var11; ++z) {
-                        if (x >= 0 && z >= -1 && x < xSize && z < zSize) {
-                            int var18 = x - xStart;
-                            int var19 = z - zStart;
+                    for(int var17 = var10 - var11 - 1; var17 < var10 + var11; ++var17) {
+                        if (var12 >= 0 && var17 >= -1 && var12 < var4 && var17 < var5) {
+                            int var18 = var12 - var9;
+                            int var19 = var17 - var10;
                             boolean var20 = var18 * var18 + var19 * var19 > (var11 - 2) * (var11 - 2);
-                            int blockX = (xCenter / scale + x - xSize / 2) * scale;
-                            int blockZ = (zCenter / scale + z - zSize / 2) * scale;
+                            int var21 = (var7 / var6 + var12 - var4 / 2) * var6;
+                            int var22 = (var8 / var6 + var17 - var5 / 2) * var6;
                             byte var23 = 0;
                             byte var24 = 0;
                             byte var25 = 0;
-                            int[] maxBlocksCnt = new int[256];
-                            Chunk chunk = world.getChunkFromBlockCoords(blockX, blockZ);
-                            int chunkCoordX = blockX & 15;
-                            int chuunkCoordZ = blockZ & 15;
+                            int[] var26 = new int[256];
+                            Chunk var27 = var1.getChunkFromBlockCoords(var21, var22);
+                            int var28 = var21 & 15;
+                            int var29 = var22 & 15;
                             int var30 = 0;
-                            double avgHeightValue = 0.0D;
-                            int xx;
-                            int zz;
-                            int y;
-                            int yy;
-                            if (world.worldProvider.field_6478_e) {
-                                xx = blockX + blockZ * 231871;
-                                xx = xx * xx * 31287121 + xx * 11;
+                            double var31 = 0.0D;
+                            int var33;
+                            int var34;
+                            int var35;
+                            int var38;
+                            if (var1.worldProvider.hasNoSky) {
+                                var33 = var21 + var22 * 231871;
+                                var33 = var33 * var33 * 31287121 + var33 * 11;
                                 int var10001;
-                                if ((xx >> 20 & 1) == 0) {
+                                if ((var33 >> 20 & 1) == 0) {
                                     var10001 = Block.dirt.blockID;
-                                    maxBlocksCnt[var10001] += 10;
+                                    var26[var10001] += 10;
                                 } else {
                                     var10001 = Block.stone.blockID;
-                                    maxBlocksCnt[var10001] += 10;
+                                    var26[var10001] += 10;
                                 }
 
-                                avgHeightValue = 100.0D;
+                                var31 = 100.0D;
                             } else {
-                                for(xx = 0; xx < scale; ++xx) {
-                                    for(zz = 0; zz < scale; ++zz) {
-                                    	//combine multiple blocks into one
-                                        y = chunk.getHeightValue(xx + chunkCoordX, zz + chuunkCoordZ) + 1;
-                                        int idbelow = 0;
-                                        if (y > 1) {
-                                            boolean hasblockbelow = false;
+                                for(var33 = 0; var33 < var6; ++var33) {
+                                    for(var34 = 0; var34 < var6; ++var34) {
+                                        var35 = var27.getHeightValue(var33 + var28, var34 + var29) + 1;
+                                        int var36 = 0;
+                                        if (var35 > 1) {
+                                            boolean var37 = false;
 
-                                            find_highest_block:
+                                            label164:
                                             while(true) {
-                                                hasblockbelow = true;
-                                                idbelow = chunk.getBlockID(xx + chunkCoordX, y - 1, zz + chuunkCoordZ);
-                                                if (idbelow == 0) {
-                                                    hasblockbelow = false;
-                                                } else if (y > 0 && idbelow > 0 && Block.blocksList[idbelow].blockMaterial.materialMapColor == MapColor.field_28212_b) {
-                                                    hasblockbelow = false;
+                                                var37 = true;
+                                                var36 = var27.getBlockID(var33 + var28, var35 - 1, var34 + var29);
+                                                if (var36 == 0) {
+                                                    var37 = false;
+                                                } else if (var35 > 0 && var36 > 0 && Block.blocksList[var36].blockMaterial.materialMapColor == MapColor.airColor) {
+                                                    var37 = false;
                                                 }
 
-                                                if (!hasblockbelow) {
-                                                    --y;
-                                                    idbelow = chunk.getBlockID(xx + chunkCoordX, y - 1, zz + chuunkCoordZ);
+                                                if (!var37) {
+                                                    --var35;
+                                                    var36 = var27.getBlockID(var33 + var28, var35 - 1, var34 + var29);
                                                 }
 
-                                                if (hasblockbelow) {
-                                                    if (idbelow == 0 || !Block.blocksList[idbelow].blockMaterial.getIsLiquid()) {
+                                                if (var37) {
+                                                    if (var36 == 0 || !Block.blocksList[var36].blockMaterial.getIsLiquid()) {
                                                         break;
                                                     }
 
-                                                    yy = y - 1;
-                                                    //boolean var39 = false;
+                                                    var38 = var35 - 1;
+                                                    boolean var39 = false;
 
                                                     while(true) {
-                                                        int idd = chunk.getBlockID(xx + chunkCoordX, yy--, zz + chuunkCoordZ);
+                                                        int var43 = var27.getBlockID(var33 + var28, var38--, var34 + var29);
                                                         ++var30;
-                                                        if (yy <= 0 || idd == 0 || !Block.blocksList[idd].blockMaterial.getIsLiquid()) {
-                                                            break find_highest_block;
+                                                        if (var38 <= 0 || var43 == 0 || !Block.blocksList[var43].blockMaterial.getIsLiquid()) {
+                                                            break label164;
                                                         }
                                                     }
                                                 }
                                             }
                                         }
 
-                                        avgHeightValue += (double)y / (double)(scale * scale);
-                                        int var10002 = maxBlocksCnt[idbelow]++;
+                                        var31 += (double)var35 / (double)(var6 * var6);
+                                        int var10002 = var26[var36]++;
                                     }
                                 }
                             }
 
-                            var30 /= scale * scale;
-                            //int var10000 = var23 / (scale * scale);
-                            //var10000 = var24 / (scale * scale);
-                            //var10000 = var25 / (scale * scale);
-                            xx = 0;
-                            zz = 0;
+                            var30 /= var6 * var6;
+                            int var10000 = var23 / (var6 * var6);
+                            var10000 = var24 / (var6 * var6);
+                            var10000 = var25 / (var6 * var6);
+                            var33 = 0;
+                            var34 = 0;
 
-                            for(y = 0; y < 256; ++y) {
-                                if (maxBlocksCnt[y] > xx) {
-                                    zz = y;
-                                    xx = maxBlocksCnt[y];
+                            for(var35 = 0; var35 < 256; ++var35) {
+                                if (var26[var35] > var33) {
+                                    var34 = var35;
+                                    var33 = var26[var35];
                                 }
                             }
 
-                            double var41 = (avgHeightValue - prevAvgHeightValue) * 4.0D / (double)(scale + 4) + ((double)(x + z & 1) - 0.5D) * 0.4D;
-                            
-                            byte coltype = 1;
+                            double var41 = (var31 - var15) * 4.0D / (double)(var6 + 4) + ((double)(var12 + var17 & 1) - 0.5D) * 0.4D;
+                            byte var42 = 1;
                             if (var41 > 0.6D) {
-                                coltype = 2;
+                                var42 = 2;
                             }
 
                             if (var41 < -0.6D) {
-                                coltype = 0;
+                                var42 = 0;
                             }
 
-                            yy = 0;
-                            if (zz > 0) {
-                                MapColor var44 = Block.blocksList[zz].blockMaterial.materialMapColor;
-                                if (var44 == MapColor.field_28200_n) {
-                                    var41 = (double)var30 * 0.1D + (double)(x + z & 1) * 0.2D;
-                                    coltype = 1;
+                            var38 = 0;
+                            if (var34 > 0) {
+                                MapColor var44 = Block.blocksList[var34].blockMaterial.materialMapColor;
+                                if (var44 == MapColor.waterColor) {
+                                    var41 = (double)var30 * 0.1D + (double)(var12 + var17 & 1) * 0.2D;
+                                    var42 = 1;
                                     if (var41 < 0.5D) {
-                                        coltype = 2;
+                                        var42 = 2;
                                     }
 
                                     if (var41 > 0.9D) {
-                                        coltype = 0;
+                                        var42 = 0;
                                     }
                                 }
 
-                                yy = var44.colorIndex;
+                                var38 = var44.colorIndex;
                             }
 
-                            prevAvgHeightValue = avgHeightValue;
-                            if (z >= 0 && var18 * var18 + var19 * var19 < var11 * var11 && (!var20 || (x + z & 1) != 0)) {
-                                byte var45 = var3.field_28176_f[x + z * xSize];
-                                byte var40 = (byte)(yy * 4 + coltype);
+                            var15 = var31;
+                            if (var17 >= 0 && var18 * var18 + var19 * var19 < var11 * var11 && (!var20 || (var12 + var17 & 1) != 0)) {
+                                byte var45 = var3.field_28176_f[var12 + var17 * var4];
+                                byte var40 = (byte)(var38 * 4 + var42);
                                 if (var45 != var40) {
-                                    if (var13 > z) {
-                                        var13 = z;
+                                    if (var13 > var17) {
+                                        var13 = var17;
                                     }
 
-                                    if (var14 < z) {
-                                        var14 = z;
+                                    if (var14 < var17) {
+                                        var14 = var17;
                                     }
 
-                                    var3.field_28176_f[x + z * xSize] = var40;
+                                    var3.field_28176_f[var12 + var17 * var4] = var40;
                                 }
                             }
                         }
                     }
 
                     if (var13 <= var14) {
-                        var3.func_28170_a(x, var13, var14);
+                        var3.func_28170_a(var12, var13, var14);
                     }
                 }
             }

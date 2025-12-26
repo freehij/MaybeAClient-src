@@ -73,7 +73,7 @@ public class Client {
 	public static String cmdPrefix = ".";
 	public static Minecraft mc;
 	public static final String clientName = "MaybeAClient";
-	public static final String clientVersion = "3.1.5";
+	public static final String clientVersion = "4.0.1";
 	
 	public static final int saveVersion = 4;
 	/*
@@ -481,7 +481,7 @@ public class Client {
 		int j = 0;
 		for(int i = 0; i < MapColor.mapColorArray.length; ++i) {
 			MapColor mc = MapColor.mapColorArray[i];
-			if(mc != null && mc != MapColor.field_28212_b) { //black not possible
+			if(mc != null && mc != MapColor.airColor) { //black not possible
 				int col = mc.colorValue;
 				if(!containedColors.containsKey(col)) {
 					possibleColors[j] = col;
@@ -717,9 +717,9 @@ public class Client {
 	*/
 	
 	/**
-	 * 3.1.5
-	 * Fixed AutoBlockPlace attempting to place blocks on activeable blocks
-	 * Fixed Schematica Stats not using block metadata
+	 * 4.0.1
+	 * Fixed water rendering
+	 * Fixed compass and clock textures when using high resolution texturepacks
 	 */
 	
 	static {
@@ -789,7 +789,7 @@ public class Client {
 		registerHack(new NoRenderHack());
 		//1.8
 		registerHack(new AutoScreenshotCopyHack());
-		registerHack(new ThirdPersonTweaksHack());
+		registerHack(new ThirdPersonTweaksHack()); //TODO
 		registerHack(new FastPortalHack());
 		registerHack(new AutoFishHack());
 		registerHack(new ChestCheckerHack());

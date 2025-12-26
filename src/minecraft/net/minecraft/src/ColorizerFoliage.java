@@ -21,4 +21,8 @@ public class ColorizerFoliage {
     public static int getFoliageColorBirch() {
         return 8431445;
     }
+
+    public static int func_31073_c() {
+        return 4764952;
+    }
 }

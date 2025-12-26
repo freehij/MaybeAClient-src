@@ -7,7 +7,7 @@ public abstract class WorldProvider {
     public WorldChunkManager worldChunkMgr;
     public boolean isNether = false;
     public boolean isHellWorld = false;
-    public boolean field_6478_e = false;
+    public boolean hasNoSky = false;
     public float[] lightBrightnessTable = new float[16];
     public int worldType = 0;
     private float[] colorsSunriseSunset = new float[4];
@@ -65,7 +65,6 @@ public abstract class WorldProvider {
     	if(CustomSkyHack.instance.status) {
         	return CustomSkyHack.calcSunriseSunsetColors(var1, var2);
         }
-    	
         float var3 = 0.4F;
         float var4 = MathHelper.cos(var1 * 3.1415927F * 2.0F) - 0.0F;
         float var5 = -0.0F;

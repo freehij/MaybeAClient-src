@@ -15,7 +15,7 @@ public interface IBlockAccess {
 
     boolean isBlockOpaqueCube(int var1, int var2, int var3);
 
-    boolean func_28100_h(int var1, int var2, int var3);
+    boolean isBlockNormalCube(int var1, int var2, int var3);
 
     WorldChunkManager getWorldChunkManager();
 }

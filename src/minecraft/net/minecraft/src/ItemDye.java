@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 public class ItemDye extends Item {
     public static final String[] dyeColors = new String[]{"black", "red", "green", "brown", "blue", "purple", "cyan", "silver", "gray", "pink", "lime", "yellow", "lightBlue", "magenta", "orange", "white"};
+    public static final int[] field_31002_bk = new int[]{1973019, 11743532, 3887386, 5320730, 2437522, 8073150, 2651799, 2651799, 4408131, 14188952, 4312372, 14602026, 6719955, 12801229, 15435844, 15790320};
 
     public ItemDye(int var1) {
         super(var1);
@@ -52,7 +53,7 @@ public class ItemDye extends Item {
                             var10 += itemRand.nextInt(3) - 1;
                             var11 += (itemRand.nextInt(3) - 1) * itemRand.nextInt(3) / 2;
                             var12 += itemRand.nextInt(3) - 1;
-                            if (var3.getBlockId(var10, var11 - 1, var12) != Block.grass.blockID || var3.func_28100_h(var10, var11, var12)) {
+                            if (var3.getBlockId(var10, var11 - 1, var12) != Block.grass.blockID || var3.isBlockNormalCube(var10, var11, var12)) {
                                 continue label53;
                             }
                         }

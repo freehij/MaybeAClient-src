@@ -112,7 +112,7 @@ public class BlockTrapDoor extends Block {
                 --var7;
             }
 
-            if (!var1.func_28100_h(var7, var3, var8)) {
+            if (!var1.isBlockNormalCube(var7, var3, var8)) {
                 var1.setBlockWithNotify(var2, var3, var4, 0);
                 this.dropBlockAsItem(var1, var2, var3, var4, var6);
             }
@@ -173,7 +173,7 @@ public class BlockTrapDoor extends Block {
                 --var2;
             }
 
-            return var1.func_28100_h(var2, var3, var4);
+            return var1.isBlockNormalCube(var2, var3, var4);
         }
     }
 

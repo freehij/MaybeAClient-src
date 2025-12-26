@@ -121,7 +121,8 @@ public class EffectRenderer {
                         double var11 = (double)var1 + ((double)var8 + 0.5D) / (double)var7;
                         double var13 = (double)var2 + ((double)var9 + 0.5D) / (double)var7;
                         double var15 = (double)var3 + ((double)var10 + 0.5D) / (double)var7;
-                        this.addEffect((new EntityDiggingFX(this.worldObj, var11, var13, var15, var11 - (double)var1 - 0.5D, var13 - (double)var2 - 0.5D, var15 - (double)var3 - 0.5D, var6)).func_4041_a(var1, var2, var3));
+                        int var17 = this.rand.nextInt(6);
+                        this.addEffect((new EntityDiggingFX(this.worldObj, var11, var13, var15, var11 - (double)var1 - 0.5D, var13 - (double)var2 - 0.5D, var15 - (double)var3 - 0.5D, var6, var17, var5)).func_4041_a(var1, var2, var3));
                     }
                 }
             }
@@ -161,7 +162,7 @@ public class EffectRenderer {
                 var8 = (double)var1 + var6.maxX + (double)var7;
             }
 
-            this.addEffect((new EntityDiggingFX(this.worldObj, var8, var10, var12, 0.0D, 0.0D, 0.0D, var6)).func_4041_a(var1, var2, var3).func_407_b(0.2F).func_405_d(0.6F));
+            this.addEffect((new EntityDiggingFX(this.worldObj, var8, var10, var12, 0.0D, 0.0D, 0.0D, var6, var4, this.worldObj.getBlockMetadata(var1, var2, var3))).func_4041_a(var1, var2, var3).func_407_b(0.2F).func_405_d(0.6F));
         }
     }
 

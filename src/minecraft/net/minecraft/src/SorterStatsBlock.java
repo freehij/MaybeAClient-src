@@ -38,8 +38,8 @@ class SorterStatsBlock implements Comparator {
                 return -1;
             }
 
-            int var7 = GuiStats.func_27142_c(this.field_27298_b.field_27274_a).func_27184_a(var5);
-            int var8 = GuiStats.func_27142_c(this.field_27298_b.field_27274_a).func_27184_a(var6);
+            int var7 = GuiStats.func_27142_c(this.field_27298_b.field_27274_a).writeStat(var5);
+            int var8 = GuiStats.func_27142_c(this.field_27298_b.field_27274_a).writeStat(var6);
             if (var7 != var8) {
                 return (var7 - var8) * this.field_27298_b.field_27270_f;
             }

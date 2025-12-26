@@ -34,8 +34,8 @@ public class WorldGenClay extends WorldGenerator {
                 int var33 = MathHelper.floor_double(var20 + var28 / 2.0D);
                 int var34 = MathHelper.floor_double(var22 - var30 / 2.0D);
                 int var35 = MathHelper.floor_double(var22 + var30 / 2.0D);
-                int var36 = MathHelper.floor_double(var20 - var28 / 2.0D);
-                int var37 = MathHelper.floor_double(var20 + var28 / 2.0D);
+                int var36 = MathHelper.floor_double(var24 - var28 / 2.0D);
+                int var37 = MathHelper.floor_double(var24 + var28 / 2.0D);
 
                 for(int var38 = var32; var38 <= var33; ++var38) {
                     for(int var39 = var34; var39 <= var35; ++var39) {

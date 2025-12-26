@@ -227,7 +227,7 @@ public final class ItemStack {
     public boolean isStackEqual(ItemStack var1) {
         return this.itemID == var1.itemID && this.stackSize == var1.stackSize && this.itemDamage == var1.itemDamage;
     }
-
+    
     public ArrayList<String[]> getTooltip() {
 		//XXX MaybeAClient
 		ArrayList<String[]> tooltip = new ArrayList<String[]>();

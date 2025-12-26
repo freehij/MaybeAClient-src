@@ -50,7 +50,6 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
     	
     	EventMPMovementUpdate ev = new EventMPMovementUpdate();
     	EventRegistry.handleEvent(ev);
-    	
         if (this.field_9380_bx++ == 20) {
             this.sendInventoryChanged();
             this.field_9380_bx = 0;
@@ -144,10 +143,10 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
         this.health -= var1;
     }
 
-    public void func_20059_m() {
+    public void closeScreen() {
         this.sendQueue.addToSendQueue(new Packet101CloseWindow(this.craftingInventory.windowId));
         this.inventory.setItemStack((ItemStack)null);
-        super.func_20059_m();
+        super.closeScreen();
     }
 
     public void setHealth(int var1) {

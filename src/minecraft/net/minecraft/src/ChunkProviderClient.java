@@ -84,7 +84,7 @@ public class ChunkProviderClient implements IChunkProvider {
         this.field_889_c.remove(var3);
     }
 
-    public Chunk func_538_d(int var1, int var2) {
+    public Chunk prepareChunk(int var1, int var2) {
         ChunkCoordIntPair var3 = new ChunkCoordIntPair(var1, var2);
         byte[] var4 = new byte['\u8000'];
         Chunk var5 = new Chunk(this.worldObj, var4, var1, var2);
@@ -141,11 +141,11 @@ public class ChunkProviderClient implements IChunkProvider {
 		return true;
     }
 
-    public boolean func_532_a() {
+    public boolean unload100OldestChunks() {
         return false;
     }
 
-    public boolean func_536_b() {
+    public boolean canSave() {
         return false;
     }
 
@@ -155,7 +155,7 @@ public class ChunkProviderClient implements IChunkProvider {
     public String makeString() {
         return "MultiplayerChunkCache: " + this.chunkMapping.size();
     }
-
+    
     public void importOldTileEntities() {
 		Iterator iterator = chunkMapping.keySet().iterator();
         do

@@ -42,7 +42,6 @@ public class IngameHook {
 		Tessellator.instance.addVertexWithUV(256, 0, 0, 1, 0);
 		Tessellator.instance.addVertexWithUV(0, 0, 0, 0, 0);
 		Tessellator.instance.draw();
-
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glColor4f(1, 1, 1, 1);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/terrain.png"));

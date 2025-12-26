@@ -6,17 +6,17 @@ import net.skidcode.gh.maybeaclient.hacks.AutoFishHack;
 import net.skidcode.gh.maybeaclient.utils.PlayerUtils;
 
 public class EntityFish extends Entity {
-    private int tileX;
-    private int tileY;
-    private int tileZ;
-    private int field_4092_g;
-    private boolean field_4091_h;
-    public int field_4098_a;
+    private int xTile;
+    private int yTile;
+    private int zTile;
+    private int inTile;
+    private boolean inGround;
+    public int shake;
     public EntityPlayer angler;
-    private int field_4090_i;
-    private int field_4089_j;
-    private int field_4088_k;
-    public Entity field_4096_c;
+    private int ticksInGround;
+    private int ticksInAir;
+    private int ticksCatchable;
+    public Entity bobber;
     private int field_6388_l;
     private double field_6387_m;
     private double field_6386_n;
@@ -29,15 +29,15 @@ public class EntityFish extends Entity {
 
     public EntityFish(World var1) {
         super(var1);
-        this.tileX = -1;
-        this.tileY = -1;
-        this.tileZ = -1;
-        this.field_4092_g = 0;
-        this.field_4091_h = false;
-        this.field_4098_a = 0;
-        this.field_4089_j = 0;
-        this.field_4088_k = 0;
-        this.field_4096_c = null;
+        this.xTile = -1;
+        this.yTile = -1;
+        this.zTile = -1;
+        this.inTile = 0;
+        this.inGround = false;
+        this.shake = 0;
+        this.ticksInAir = 0;
+        this.ticksCatchable = 0;
+        this.bobber = null;
         this.setSize(0.25F, 0.25F);
         this.ignoreFrustumCheck = true;
     }
@@ -50,15 +50,15 @@ public class EntityFish extends Entity {
 
     public EntityFish(World var1, EntityPlayer var2) {
         super(var1);
-        this.tileX = -1;
-        this.tileY = -1;
-        this.tileZ = -1;
-        this.field_4092_g = 0;
-        this.field_4091_h = false;
-        this.field_4098_a = 0;
-        this.field_4089_j = 0;
-        this.field_4088_k = 0;
-        this.field_4096_c = null;
+        this.xTile = -1;
+        this.yTile = -1;
+        this.zTile = -1;
+        this.inTile = 0;
+        this.inGround = false;
+        this.shake = 0;
+        this.ticksInAir = 0;
+        this.ticksCatchable = 0;
+        this.bobber = null;
         this.ignoreFrustumCheck = true;
         this.angler = var2;
         this.angler.fishEntity = this;
@@ -102,7 +102,7 @@ public class EntityFish extends Entity {
         float var10 = MathHelper.sqrt_double(var1 * var1 + var5 * var5);
         this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(var1, var5) * 180.0D / 3.1415927410125732D);
         this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(var3, (double)var10) * 180.0D / 3.1415927410125732D);
-        this.field_4090_i = 0;
+        this.ticksInGround = 0;
     }
 
     public void setPositionAndRotation2(double var1, double var3, double var5, float var7, float var8, int var9) {
@@ -156,20 +156,20 @@ public class EntityFish extends Entity {
                     return;
                 }
 
-                if (this.field_4096_c != null) {
-                    if (!this.field_4096_c.isDead) {
-                        this.posX = this.field_4096_c.posX;
-                        this.posY = this.field_4096_c.boundingBox.minY + (double)this.field_4096_c.height * 0.8D;
-                        this.posZ = this.field_4096_c.posZ;
+                if (this.bobber != null) {
+                    if (!this.bobber.isDead) {
+                        this.posX = this.bobber.posX;
+                        this.posY = this.bobber.boundingBox.minY + (double)this.bobber.height * 0.8D;
+                        this.posZ = this.bobber.posZ;
                         return;
                     }
 
-                    this.field_4096_c = null;
+                    this.bobber = null;
                 }
             }
 
-            if (this.field_4098_a > 0) {
-                --this.field_4098_a;
+            if (this.shake > 0) {
+                --this.shake;
             }
             
             if (this.worldObj.multiplayerWorld && AutoFishHack.instance.status) {
@@ -213,25 +213,25 @@ public class EntityFish extends Entity {
         		return;
         	}
 
-            if (this.field_4091_h) {
-                int var19 = this.worldObj.getBlockId(this.tileX, this.tileY, this.tileZ);
-                if (var19 == this.field_4092_g) {
-                    ++this.field_4090_i;
-                    if (this.field_4090_i == 1200) {
+            if (this.inGround) {
+                int var19 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
+                if (var19 == this.inTile) {
+                    ++this.ticksInGround;
+                    if (this.ticksInGround == 1200) {
                         this.setEntityDead();
                     }
 
                     return;
                 }
 
-                this.field_4091_h = false;
+                this.inGround = false;
                 this.motionX *= (double)(this.rand.nextFloat() * 0.2F);
                 this.motionY *= (double)(this.rand.nextFloat() * 0.2F);
                 this.motionZ *= (double)(this.rand.nextFloat() * 0.2F);
-                this.field_4090_i = 0;
-                this.field_4089_j = 0;
+                this.ticksInGround = 0;
+                this.ticksInAir = 0;
             } else {
-                ++this.field_4089_j;
+                ++this.ticksInAir;
             }
 
             Vec3D var20 = Vec3D.createVector(this.posX, this.posY, this.posZ);
@@ -250,7 +250,7 @@ public class EntityFish extends Entity {
             double var13;
             for(int var8 = 0; var8 < var5.size(); ++var8) {
                 Entity var9 = (Entity)var5.get(var8);
-                if (var9.canBeCollidedWith() && (var9 != this.angler || this.field_4089_j >= 5)) {
+                if (var9.canBeCollidedWith() && (var9 != this.angler || this.ticksInAir >= 5)) {
                     float var10 = 0.3F;
                     AxisAlignedBB var11 = var9.boundingBox.expand((double)var10, (double)var10, (double)var10);
                     MovingObjectPosition var12 = var11.func_1169_a(var20, var2);
@@ -271,14 +271,14 @@ public class EntityFish extends Entity {
             if (var3 != null) {
                 if (var3.entityHit != null) {
                     if (var3.entityHit.attackEntityFrom(this.angler, 0)) {
-                        this.field_4096_c = var3.entityHit;
+                        this.bobber = var3.entityHit;
                     }
                 } else {
-                    this.field_4091_h = true;
+                    this.inGround = true;
                 }
             }
 
-            if (!this.field_4091_h) {
+            if (!this.inGround) {
                 this.moveEntity(this.motionX, this.motionY, this.motionZ);
                 float var24 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
                 this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / 3.1415927410125732D);
@@ -318,8 +318,8 @@ public class EntityFish extends Entity {
                 }
 
                 if (var27 > 0.0D) {
-                    if (this.field_4088_k > 0) {
-                        --this.field_4088_k;
+                    if (this.ticksCatchable > 0) {
+                        --this.ticksCatchable;
                     } else {
                         short var29 = 500;
                         if (this.worldObj.canBlockBeRainedOn(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY) + 1, MathHelper.floor_double(this.posZ))) {
@@ -327,7 +327,7 @@ public class EntityFish extends Entity {
                         }
 
                         if (this.rand.nextInt(var29) == 0) {
-                            this.field_4088_k = this.rand.nextInt(30) + 10;
+                            this.ticksCatchable = this.rand.nextInt(30) + 10;
                             this.motionY -= 0.20000000298023224D;
                             this.worldObj.playSoundAtEntity(this, "random.splash", 0.25F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
                             float var30 = (float)MathHelper.floor_double(this.boundingBox.minY);
@@ -350,7 +350,7 @@ public class EntityFish extends Entity {
                     }
                 }
 
-                if (this.field_4088_k > 0) {
+                if (this.ticksCatchable > 0) {
                     this.motionY -= (double)(this.rand.nextFloat() * this.rand.nextFloat() * this.rand.nextFloat()) * 0.2D;
                 }
 
@@ -370,21 +370,21 @@ public class EntityFish extends Entity {
     }
 
     public void writeEntityToNBT(NBTTagCompound var1) {
-        var1.setShort("xTile", (short)this.tileX);
-        var1.setShort("yTile", (short)this.tileY);
-        var1.setShort("zTile", (short)this.tileZ);
-        var1.setByte("inTile", (byte)this.field_4092_g);
-        var1.setByte("shake", (byte)this.field_4098_a);
-        var1.setByte("inGround", (byte)(this.field_4091_h ? 1 : 0));
+        var1.setShort("xTile", (short)this.xTile);
+        var1.setShort("yTile", (short)this.yTile);
+        var1.setShort("zTile", (short)this.zTile);
+        var1.setByte("inTile", (byte)this.inTile);
+        var1.setByte("shake", (byte)this.shake);
+        var1.setByte("inGround", (byte)(this.inGround ? 1 : 0));
     }
 
     public void readEntityFromNBT(NBTTagCompound var1) {
-        this.tileX = var1.getShort("xTile");
-        this.tileY = var1.getShort("yTile");
-        this.tileZ = var1.getShort("zTile");
-        this.field_4092_g = var1.getByte("inTile") & 255;
-        this.field_4098_a = var1.getByte("shake") & 255;
-        this.field_4091_h = var1.getByte("inGround") == 1;
+        this.xTile = var1.getShort("xTile");
+        this.yTile = var1.getShort("yTile");
+        this.zTile = var1.getShort("zTile");
+        this.inTile = var1.getByte("inTile") & 255;
+        this.shake = var1.getByte("shake") & 255;
+        this.inGround = var1.getByte("inGround") == 1;
     }
 
     public float getShadowSize() {
@@ -393,20 +393,20 @@ public class EntityFish extends Entity {
 
     public int catchFish() {
         byte var1 = 0;
-        if (this.field_4096_c != null) {
+        if (this.bobber != null) {
             double var2 = this.angler.posX - this.posX;
             double var4 = this.angler.posY - this.posY;
             double var6 = this.angler.posZ - this.posZ;
             double var8 = (double)MathHelper.sqrt_double(var2 * var2 + var4 * var4 + var6 * var6);
             double var10 = 0.1D;
-            Entity var10000 = this.field_4096_c;
+            Entity var10000 = this.bobber;
             var10000.motionX += var2 * var10;
-            var10000 = this.field_4096_c;
+            var10000 = this.bobber;
             var10000.motionY += var4 * var10 + (double)MathHelper.sqrt_double(var8) * 0.08D;
-            var10000 = this.field_4096_c;
+            var10000 = this.bobber;
             var10000.motionZ += var6 * var10;
             var1 = 3;
-        } else if (this.field_4088_k > 0) {
+        } else if (this.ticksCatchable > 0) {
             EntityItem var13 = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, new ItemStack(Item.fishRaw));
             double var3 = this.angler.posX - this.posX;
             double var5 = this.angler.posY - this.posY;
@@ -421,7 +421,7 @@ public class EntityFish extends Entity {
             var1 = 1;
         }
 
-        if (this.field_4091_h) {
+        if (this.inGround) {
             var1 = 2;
         }
 

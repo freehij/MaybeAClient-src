@@ -34,14 +34,14 @@ public class GuiEditSign extends GuiScreen {
     public void updateScreen() {
         ++this.updateCounter;
     }
-    
+
     public void addChar(char var1) {
-        StringBuilder var10000 = new StringBuilder();
+    	StringBuilder var10000 = new StringBuilder();
         String[] var10002 = this.entitySign.signText;
         int var10004 = this.editLine;
         var10002[var10004] = var10000.append(var10002[var10004]).append(var1).toString();
     }
-
+    
     protected void actionPerformed(GuiButton var1) {
     	if(var1 instanceof GuiCharSelector) {
     		GuiCharSelector sel = (GuiCharSelector) var1;
@@ -61,6 +61,7 @@ public class GuiEditSign extends GuiScreen {
     public void displayScreen() {
     	this.mc.displayGuiScreen((GuiScreen)null);
     }
+
     protected void keyTyped(char var1, int var2) {
         if (var2 == 200) {
             this.editLine = this.editLine - 1 & 3;
@@ -75,7 +76,7 @@ public class GuiEditSign extends GuiScreen {
         }
 
         if (allowedCharacters.indexOf(var1) >= 0 && this.entitySign.signText[this.editLine].length() < 15) {
-        	this.addChar(var1);
+            this.addChar(var1);
         }
 
     }
@@ -84,7 +85,7 @@ public class GuiEditSign extends GuiScreen {
         this.drawDefaultBackground();
         this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 40, 16777215);
         GL11.glPushMatrix();
-        GL11.glTranslatef((float)(this.width / 2), (float)(this.height / 2), 50.0F);
+        GL11.glTranslatef((float)(this.width / 2), 0.0F, 50.0F);
         float var4 = 93.75F;
         GL11.glScalef(-var4, -var4, -var4);
         GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
@@ -92,7 +93,7 @@ public class GuiEditSign extends GuiScreen {
         if (var5 == Block.signPost) {
             float var6 = (float)(this.entitySign.getBlockMetadata() * 360) / 16.0F;
             GL11.glRotatef(var6, 0.0F, 1.0F, 0.0F);
-            GL11.glTranslatef(0.0F, 0.3125F, 0.0F);
+            GL11.glTranslatef(0.0F, -1.0625F, 0.0F);
         } else {
             int var8 = this.entitySign.getBlockMetadata();
             float var7 = 0.0F;
@@ -109,7 +110,7 @@ public class GuiEditSign extends GuiScreen {
             }
 
             GL11.glRotatef(var7, 0.0F, 1.0F, 0.0F);
-            GL11.glTranslatef(0.0F, 0.3125F, 0.0F);
+            GL11.glTranslatef(0.0F, -1.0625F, 0.0F);
         }
 
         if (this.updateCounter / 6 % 2 == 0) {

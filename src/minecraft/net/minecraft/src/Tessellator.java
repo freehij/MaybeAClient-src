@@ -42,7 +42,7 @@ public class Tessellator {
     private int bufferSize;
 
 	public boolean schematicaRendering = false;
-	
+
     private Tessellator(int var1) {
         this.bufferSize = var1;
         this.byteBuffer = GLAllocation.createDirectByteBuffer(var1 * 4);

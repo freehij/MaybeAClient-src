@@ -7,7 +7,7 @@ public class RenderWolf extends RenderLiving {
         super(var1, var2);
     }
 
-    public void func_25005_a(EntityWolf e, double x, double y, double z, float var8, float var9) {
+    public void renderWolf(EntityWolf e, double x, double y, double z, float var8, float var9) {
     	if(DogOwnerHack.instance.status) {
         	String nick = e.getWolfOwner();
         	String owner = "".equals(nick) ? "No Owner" : ("Owner: "+nick);
@@ -38,12 +38,12 @@ public class RenderWolf extends RenderLiving {
     // $FF: synthetic method
     // $FF: bridge method
     public void doRenderLiving(EntityLiving var1, double var2, double var4, double var6, float var8, float var9) {
-        this.func_25005_a((EntityWolf)var1, var2, var4, var6, var8, var9);
+        this.renderWolf((EntityWolf)var1, var2, var4, var6, var8, var9);
     }
 
     // $FF: synthetic method
     // $FF: bridge method
     public void doRender(Entity var1, double var2, double var4, double var6, float var8, float var9) {
-        this.func_25005_a((EntityWolf)var1, var2, var4, var6, var8, var9);
+        this.renderWolf((EntityWolf)var1, var2, var4, var6, var8, var9);
     }
 }

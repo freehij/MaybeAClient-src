@@ -79,6 +79,7 @@ public abstract class BlockFluid extends Block {
 
     public boolean shouldSideBeRendered(IBlockAccess var1, int var2, int var3, int var4, int var5) {
         Material var6 = var1.getBlockMaterial(var2, var3, var4);
+        
         if(XRayHack.INSTANCE.status) {
         	int id = var1.getBlockId(var2, var3, var4);
         	if(XRayHack.INSTANCE.blockChooser.blocks[id] || (Block.blocksList[id] instanceof BlockFluid)) return false;
@@ -232,7 +233,13 @@ public abstract class BlockFluid extends Block {
     }
 
     public float getBlockBrightness(IBlockAccess var1, int var2, int var3, int var4) {
-    	if(FullBrightHack.INSTANCE.status || XRayHack.INSTANCE.status) return 1.0f;
+    	if(XRayHack.INSTANCE.status) return 1.0f;
+    	if(FullBrightHack.INSTANCE.status) {
+    		float var5 = var1.getLightBrightness(var2, var3, var4);
+            float var6 = var1.getLightBrightness(var2, var3 + 1, var4);
+            float f2 = var5 > var6 ? var5 : var6;
+            return Math.max(f2, FullBrightHack.INSTANCE.brightness.getValue());
+    	}
     	float var5 = var1.getLightBrightness(var2, var3, var4);
         float var6 = var1.getLightBrightness(var2, var3 + 1, var4);
         return var5 > var6 ? var5 : var6;
@@ -246,6 +253,7 @@ public abstract class BlockFluid extends Block {
     	if(XRayHack.INSTANCE.status && XRayHack.INSTANCE.mode.currentMode.equalsIgnoreCase("Opacity")) {
     		return 0;
     	}
+    	
         return this.blockMaterial == Material.water ? 1 : 0;
     }
 

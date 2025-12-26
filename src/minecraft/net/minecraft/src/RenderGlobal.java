@@ -341,8 +341,13 @@ public class RenderGlobal implements IWorldAccess {
                 
                 if ((EntityESPHack.instance.status && var7 != this.mc.renderViewEntity && var2.isBoundingBoxInFrustum(var7.boundingBox)) || (var7.isInRangeToRenderVec3D(var1) && (var7.ignoreFrustumCheck || var2.isBoundingBoxInFrustum(var7.boundingBox)) && (var7 != this.mc.renderViewEntity || this.mc.gameSettings.thirdPersonView || this.mc.renderViewEntity.isPlayerSleeping()))) {
                     int var8 = MathHelper.floor_double(var7.posY);
-                    if (var8 < 0) var8 = 0;
-                    if (var8 >= 128) var8 = 127;
+                    if (var8 < 0) {
+                        var8 = 0;
+                    }
+
+                    if (var8 >= 128) {
+                        var8 = 127;
+                    }
 
                     if (this.worldObj.blockExists(MathHelper.floor_double(var7.posX), var8, MathHelper.floor_double(var7.posZ))) {
                         ++this.countEntitiesRendered;
@@ -477,7 +482,7 @@ public class RenderGlobal implements IWorldAccess {
         if (this.occlusionEnabled && this.mc.gameSettings.advancedOpengl && !this.mc.gameSettings.anaglyph && layer == 0) {
         	buffersToRemove = new HashSet<>(UnsafeLightLevelsHack.renderBuffers.keySet());
             
-        	byte var18 = 0;
+            byte var18 = 0;
             int var19 = 16;
             this.checkOcclusionQueryResult(var18, var19);
 
@@ -567,7 +572,6 @@ public class RenderGlobal implements IWorldAccess {
             if (layer == 0) {
             	UnsafeLightLevelsHack.renderBuffers.keySet().removeAll(buffersToRemove);
             }
-            buffersToRemove = null;
         }
 
         return var34;
@@ -588,7 +592,7 @@ public class RenderGlobal implements IWorldAccess {
         }
 
     }
-
+    
     private Set<ChunkPos> buffersToRemove;
     private int renderSortedRenderers(int var1, int var2, int var3, double var4) {
         this.glRenderLists.clear();
@@ -725,7 +729,7 @@ public class RenderGlobal implements IWorldAccess {
             return;
     	}
     	
-        if (!this.mc.theWorld.worldProvider.isNether && !CustomSkyHack.hasSky()) {
+    	if (!this.mc.theWorld.worldProvider.isNether && !CustomSkyHack.hasSky()) {
             GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
             Vec3D var2 = this.worldObj.func_4079_a(this.mc.renderViewEntity, var1);
             float var3 = (float)var2.xCoord;
@@ -849,7 +853,7 @@ public class RenderGlobal implements IWorldAccess {
     }
 
     public void renderClouds(float var1) {
-        if (!this.mc.theWorld.worldProvider.isNether && !CustomSkyHack.hasSky()) {
+    	if (!this.mc.theWorld.worldProvider.isNether && !CustomSkyHack.hasSky()) {
             if (this.mc.gameSettings.fancyGraphics) {
                 this.renderCloudsFancy(var1);
             } else {

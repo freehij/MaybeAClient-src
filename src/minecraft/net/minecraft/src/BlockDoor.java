@@ -110,11 +110,11 @@ public class BlockDoor extends Block {
         }
     }
 
-    public void openDoor(World var1, int var2, int var3, int var4, boolean var5) {
+    public void onPoweredBlockChange(World var1, int var2, int var3, int var4, boolean var5) {
         int var6 = var1.getBlockMetadata(var2, var3, var4);
         if ((var6 & 8) != 0) {
             if (var1.getBlockId(var2, var3 - 1, var4) == this.blockID) {
-                this.openDoor(var1, var2, var3 - 1, var4, var5);
+                this.onPoweredBlockChange(var1, var2, var3 - 1, var4, var5);
             }
 
         } else {
@@ -148,7 +148,7 @@ public class BlockDoor extends Block {
                 var7 = true;
             }
 
-            if (!var1.func_28100_h(var2, var3 - 1, var4)) {
+            if (!var1.isBlockNormalCube(var2, var3 - 1, var4)) {
                 var1.setBlockWithNotify(var2, var3, var4, 0);
                 var7 = true;
                 if (var1.getBlockId(var2, var3 + 1, var4) == this.blockID) {
@@ -162,7 +162,7 @@ public class BlockDoor extends Block {
                 }
             } else if (var5 > 0 && Block.blocksList[var5].canProvidePower()) {
                 boolean var8 = var1.isBlockIndirectlyGettingPowered(var2, var3, var4) || var1.isBlockIndirectlyGettingPowered(var2, var3 + 1, var4);
-                this.openDoor(var1, var2, var3, var4, var8);
+                this.onPoweredBlockChange(var1, var2, var3, var4, var8);
             }
         }
 
@@ -189,11 +189,15 @@ public class BlockDoor extends Block {
         if (var3 >= 127) {
             return false;
         } else {
-            return var1.func_28100_h(var2, var3 - 1, var4) && super.canPlaceBlockAt(var1, var2, var3, var4) && super.canPlaceBlockAt(var1, var2, var3 + 1, var4);
+            return var1.isBlockNormalCube(var2, var3 - 1, var4) && super.canPlaceBlockAt(var1, var2, var3, var4) && super.canPlaceBlockAt(var1, var2, var3 + 1, var4);
         }
     }
 
     public static boolean isOpen(int var0) {
         return (var0 & 4) != 0;
+    }
+
+    public int getMobilityFlag() {
+        return 1;
     }
 }

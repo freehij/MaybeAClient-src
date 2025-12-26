@@ -191,7 +191,7 @@ public class ChunkLoader implements IChunkLoader {
                 NBTTagCompound var12 = (NBTTagCompound)var10.tagAt(var11);
                 TileEntity var9 = TileEntity.createAndLoadEntity(var12);
                 if (var9 != null) {
-                    var4.func_1001_a(var9);
+                    var4.addTileEntity(var9);
                 }
             }
         }
