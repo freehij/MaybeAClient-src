@@ -57,8 +57,7 @@ public class BlockFlower extends Block {
 
     @Override
     public int getRenderType() {
-        if (SettingBlockChooser.rendering) return 1;
-        return XRayHack.INSTANCE.status && XRayHack.INSTANCE.blockChooser.blocks[this.blockID] ? 0 : 1;
+    	return 1;
     }
 
     @Override
