@@ -70,7 +70,7 @@ public class FreecamHack extends Hack implements EventListener{
 				}
 			}
 		}else if(event instanceof EventPlayerUpdatePost) {
-			FlyHack.handleFly(this.speedMultiplier.value); 
+			FlyHack.handleFly(this.speedMultiplier.value, false);
 		}
 	}
 	public static boolean movementTaken() {

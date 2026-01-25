@@ -45,7 +45,6 @@ public abstract class Container {
     }
 
     public ItemStack slotClick(int var1, int var2, boolean var3, EntityPlayer var4) {
-        System.out.println(var1 + " " + var2 + " " + var3);
         ItemStack var5 = null;
         if (var2 == 0 || var2 == 1) {
             InventoryPlayer var6 = var4.inventory;
@@ -69,7 +68,6 @@ public abstract class Container {
                     int var8 = var7.itemID;
                     var5 = var7.copy();
                     Slot var9 = (Slot)this.slots.get(var1);
-                    System.out.println("m");
                     if (var9 != null && var9.getStack() != null && var9.getStack().itemID == var8) {
                         this.slotClick(var1, var2, var3, var4);
                     }
