@@ -840,6 +840,7 @@ public class Client {
 		registerHack(new TNTBomberHack());
 		//4.0.4 (freehij)
 		registerHack(new AutoShearHack());
+		registerHack(new ImageViewerHack());
 
 		/*registerHack(new Hack("Test", "test", org.lwjgl.input.Keyboard.KEY_NONE, net.skidcode.gh.maybeaclient.hacks.category.Category.RENDER) {
 			public Hack init() {

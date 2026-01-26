@@ -1,8 +1,6 @@
 package net.skidcode.gh.maybeaclient.hacks;
 
-import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntitySheep;
+import net.minecraft.src.*;
 import net.skidcode.gh.maybeaclient.events.Event;
 import net.skidcode.gh.maybeaclient.events.EventListener;
 import net.skidcode.gh.maybeaclient.events.EventRegistry;
@@ -28,6 +26,10 @@ public class AutoShearHack extends Hack implements EventListener {
     @Override
     public void handleEvent(Event event) {
         if(event instanceof EventPlayerUpdatePost) {
+            int shearsSlot = this.getItemSlot(Item.shears);
+            if (shearsSlot == -1) return;
+            int prev = mc.thePlayer.inventory.currentItem;
+            int swordSlot = this.getItemSlot(Item.swordWood, Item.swordGold, Item.swordDiamond, Item.swordSteel, Item.swordStone);
             double rad = this.radius.getValue();
             List<Entity> entitiesNearby = mc.theWorld.getEntitiesWithinAABBExcludingEntity(
                     mc.thePlayer,
@@ -41,13 +43,38 @@ public class AutoShearHack extends Hack implements EventListener {
                     EntitySheep sheep = (EntitySheep) entity;
                     if (sheep.getSheared()) continue;
                     if (this.killShip.getValue() && sheep.deathTime == 0) {
+                        if (swordSlot != -1) this.checkSlot(swordSlot);
                         mc.playerController.attackEntity(mc.thePlayer, sheep);
-                        if (sheep.deathTime > 0) mc.playerController.interactWithEntity(mc.thePlayer, sheep);
+                        if (sheep.deathTime > 0) this.sheerSheep(shearsSlot, sheep);
                         continue;
                     }
-                    mc.playerController.interactWithEntity(mc.thePlayer, sheep);
+                    this.sheerSheep(shearsSlot, sheep);
                 }
             }
+            this.checkSlot(prev);
         }
+    }
+
+    public void checkSlot(int slot) {
+        if (mc.thePlayer.inventory.currentItem != slot) {
+            mc.thePlayer.inventory.currentItem = slot;
+            if (mc.isMultiplayerWorld()) ((PlayerControllerMP) mc.playerController).syncCurrentPlayItem();
+        }
+    }
+
+    public void sheerSheep(int slot, EntitySheep sheep) {
+        this.checkSlot(slot);
+        mc.playerController.interactWithEntity(mc.thePlayer, sheep);
+    }
+
+    public int getItemSlot(Item... items) {
+        for (int i = 0; i < 9; i++) {
+            ItemStack stack = mc.thePlayer.inventory.mainInventory[i];
+            if (stack == null) continue;
+            for (Item item : items) {
+                if (mc.thePlayer.inventory.mainInventory[i].getItem() == item) return i;
+            }
+        }
+        return -1;
     }
 }

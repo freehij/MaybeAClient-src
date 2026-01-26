@@ -1,5 +1,7 @@
 - Added fast craft (hold shift in inventory to craft the whole thing)
 - Added AutoShear
+- Added ImageViewer
 - Added OnGround to Fly
+- Added Biome to PlayerInfo
 - Fixed FreeCam not resetting speed values
 - Backported step sounds fix from r1.2.5
