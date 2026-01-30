@@ -723,6 +723,8 @@ public class Client {
 	 * Added ImageViewer (freehij)
 	 * Added OnGround to Fly (freehij)
 	 * Added Biome to PlayerInfo (freehij)
+	 * Added sort modules option for ClickGui(default: A-Z) (gameherobrine)
+	 * Added ScrollUsingScrollwheel option for ClickGui(enabled by default) (gameherobrine)
 	 * Fixed FreeCam not resetting speed values (freehij)
 	 * Backported step sounds fix from r1.2.5 (freehij)
 	 */
